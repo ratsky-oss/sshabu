@@ -11,15 +11,14 @@ Groups:
       IdentityFile: /path/to/key1
     Subgroups:
      - Name: host1
-
+       Hosts:
+          - Name: tetetete
     Hosts:
       - Name: host1
         HostName: host1.example.com
-        AddKeysToAgent:
-        AddressFamily:
 
   - Name: group2
-    Groups:
+    Subgroups:
       - Name: subgroup1
         Hosts:
           - Name: host3
@@ -28,19 +27,13 @@ Groups:
             IdentityFile: /path/to/key3
             Port: 2222
 
-hosts:
+Hosts:
   - Name: host2
     HostName: host2.example.com
     User: user2
     IdentityFile: /path/to/key2
     Port: 2222
 
-  - Name: host2
-    Hostname: host2.example.com
-    User: user2
-    IdentityFile: /path/to/key2
-    Port: 2222
-    
 
 # match_conditions:
 #   - condition: Host host1.example.com

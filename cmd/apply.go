@@ -6,7 +6,6 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	// "os"
 	"sshabu/pkg"
 
 	"github.com/spf13/cobra"
@@ -46,12 +45,17 @@ func init() {
 	
 	var shabu sshabu.Shabu
 	err := viper.Unmarshal(&shabu)
-	// fmt.Printf("%+v",shabu)
     check(err)
+	err = shabu.Boil()
+    check(err)
+	// fmt.Printf("%+v",shabu)
+	// fmt.Printf("%v\n", shabu)
 	buf := new(bytes.Buffer)
 	err = sshabu.RenderTemplate(shabu, buf)
 	check(err)
 	fmt.Println(buf.String())
+
+	
 	// shabu := sshabu.Shabu{
 	// 	Hosts: []sshabu.Host{
 	// 		{

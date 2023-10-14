@@ -1,24 +1,31 @@
 # -----------------------
-# RATSKY
-
-{{ with .Options -}}
-{{ template "option" . }}
+# RATSKY SSHABU
+{{ with .Options }}
+{{ include "option" . }}
 {{- end -}}
-
-{{- range .Hosts }}
+{{- range .Hosts -}}
 {{ include "host" . }}
-{{ end }}
-{{/*----------------------------------------------*/}}
+{{- end -}}
+{{- range .Groups -}}
+{{ include "group" . }}
+{{- end -}}
+{{- /*----------------------------------------------*/ -}}
 {{ define "group" }}
-{{ end }}
-{{/*----------------------------------------------*/}}
+{{- range .Hosts -}}
+{{ include "host" . }}
+{{- end -}}
+{{- range .Subgroups -}}
+{{ include "group" . }}
+{{- end -}}
+{{- end -}}
+{{- /*----------------------------------------------*/ -}}
 {{ define "host" }}
 Host {{ .Name }}
 {{- with .Options }}
 {{ include "option" . | indent 4 }}
-{{- end }}
-{{- end }}
-{{/*----------------------------------------------*/}}
+{{- end -}}
+{{- end -}}
+{{- /*----------------------------------------------*/ -}}
 {{ define "option" -}}
 {{- if .AddKeysToAgent }}AddKeysToAgent {{ .AddKeysToAgent }}
 {{ end }}
@@ -169,5 +176,5 @@ Host {{ .Name }}
 {{- if .SetEnv }}SetEnv {{ .SetEnv }}
 {{ end }}
 {{- if .StdinNull }}StdinNull {{ .StdinNull }}
-{{ end }}
+{{- end -}}
 {{- end -}}

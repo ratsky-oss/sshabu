@@ -1,8 +1,23 @@
 package sshabu
 
+import (
+	"reflect"
+)
+
 // import (
 //     "time"
 // )
+
+func inheritOptions(src, dst interface{}) {
+	srcValue := reflect.ValueOf(src).Elem()
+	dstValue := reflect.ValueOf(dst).Elem()
+
+	for i := 0; i < srcValue.NumField(); i++ {
+		if srcValue.Field(i).Interface() == nil {
+			srcValue.Field(i).Set(dstValue.Field(i))
+		}
+	}
+}
 
 type Shabu struct{
     Options     Options     `mapstructure:"globaloptions,omitempty"`
@@ -10,16 +25,47 @@ type Shabu struct{
     Groups      []Group     `mapstructure:"groups,omitempty"`
 }
 
+func (shabu *Shabu) Boil() error {
+    for i := range shabu.Groups {
+        shabu.Groups[i].solveGroup(shabu.Groups[i].Options)
+    }
+    return nil
+}
+
+
 type Host struct{
 	Options  Options `mapstructure:",squash,omitempty"`
     Name     string  `mapstructure:"name"`
 }
 
+func (host *Host) inheritOptions(groupOptions Options) error {
+    inheritOptions(&host.Options, &groupOptions)
+    return nil 
+}
+
 type Group struct{
 	Options         Options `mapstructure:"options,omitempty"`
-    Hosts           []Host  `mapstructure:"hostname,omitempty"`
+    Hosts           []Host  `mapstructure:"hosts,omitempty"`
     Name            string  `mapstructure:"name"`
-    Subgroups       []Group `mapstructure:"subgroups"`
+    Subgroups       []Group `mapstructure:"subgroups,omitempty"`
+}
+
+func (group *Group) inheritOptions(parentOptions Options) error {
+    inheritOptions(&group.Options, &parentOptions)
+    return nil
+}
+
+func (group *Group) solveGroup(parentOptions Options) error {
+    group.inheritOptions(parentOptions)
+    for i := range group.Hosts {
+        group.Hosts[i].inheritOptions(group.Options)
+    }
+    
+    for i := range group.Subgroups {
+        group.Subgroups[i].solveGroup(group.Options)
+    }
+    
+    return nil
 }
 
 type Option interface{}
