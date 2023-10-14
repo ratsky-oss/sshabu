@@ -4,10 +4,6 @@ import (
 	"reflect"
 )
 
-// import (
-//     "time"
-// )
-
 func inheritOptions(src, dst interface{}) {
 	srcValue := reflect.ValueOf(src).Elem()
 	dstValue := reflect.ValueOf(dst).Elem()
