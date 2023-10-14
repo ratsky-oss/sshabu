@@ -11,11 +11,44 @@ func Test_inheritOptions(t *testing.T) {
 		name string
 		args args
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Copy non-nil fields from src to dst",
+			args: args{
+				src: &Options{ // Your source object with some fields set to non-nil values
+					AddressFamily: "ipv4",
+					Port:          22,
+				},
+				dst: &Options{ // Your destination object with some fields set to nil
+					AddressFamily: nil,
+					Port:          nil,
+				},
+			},
+		},
+		{
+			name: "No changes when src has nil fields",
+			args: args{
+				src: &Options{ // Your source object with all fields set to nil
+					AddressFamily: nil,
+					Port:          nil,
+				},
+				dst: &Options{ // Your destination object with some fields set to non-nil values
+					AddressFamily: "ipv4",
+					Port:          22,
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			inheritOptions(tt.args.src, tt.args.dst)
+			// Add assertions here to verify that non-nil fields were copied correctly
+			if tt.args.src.(*Options).AddressFamily != nil && tt.args.dst.(*Options).AddressFamily == nil {
+				t.Errorf("AddressFamily was not copied")
+			}
+
+			if tt.args.src.(*Options).Port != nil && tt.args.dst.(*Options).Port == nil {
+				t.Errorf("Port was not copied")
+			}
 		})
 	}
 }
@@ -31,7 +64,27 @@ func TestShabu_Boil(t *testing.T) {
 		fields  fields
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Test with valid options and groups",
+			fields: fields{
+				Options: Options{
+					AddressFamily: "ipv4",
+					Port:          22,
+				},
+				Hosts: []Host{
+					{
+						Name: "Host1",
+					},
+				},
+				Groups: []Group{
+					{
+						Name: "Group1",
+					},
+				},
+			},
+			wantErr: false,
+		},
+		// Other cases
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
