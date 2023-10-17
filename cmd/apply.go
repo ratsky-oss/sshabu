@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"fmt"
 	"sshabu/pkg"
-
+	"os"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -53,9 +53,11 @@ func init() {
 	buf := new(bytes.Buffer)
 	err = sshabu.RenderTemplate(shabu, buf)
 	check(err)
-	fmt.Println(buf.String())
+	// fmt.Println(buf.String())
 
-	
+	// TESTED BY ssh -F destination.txt host1 
+    err = os.WriteFile(".config.tmp", buf.Bytes(), 0600)
+    check(err)
 	// shabu := sshabu.Shabu{
 	// 	Hosts: []sshabu.Host{
 	// 		{
