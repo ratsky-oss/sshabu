@@ -28,36 +28,43 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("apply called")
+	RunE: func(cmd *cobra.Command, args []string) error {
+		viper.SetConfigType("yaml")  // Set the config file type
+		viper.SetConfigFile(".sshabu") // Set the config file name
+		if err := viper.ReadInConfig(); err != nil {
+			fmt.Println("Error reading config file:", err)
+			return err
+		}
+		
+		var shabu sshabu.Shabu
+		err := viper.UnmarshalExact(&shabu)
+		if err != nil{
+			return err
+		}
+		err = shabu.Boil()
+		if err != nil{
+			return err
+		}
+		// fmt.Printf("%+v",shabu)
+		// fmt.Printf("%v\n", shabu)
+		buf := new(bytes.Buffer)
+		err = sshabu.RenderTemplate(shabu, buf)
+		if err != nil{
+			return err
+		}
+		// fmt.Println(buf.String())
+	
+		// TESTED BY ssh -G -F destination.txt host1 
+		err = os.WriteFile(".config.tmp", buf.Bytes(), 0600)
+		if err != nil{
+			return err
+		}
+		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(applyCmd)
-	
-	viper.SetConfigType("yaml")  // Set the config file type
-    viper.SetConfigFile(".sshabu") // Set the config file name
-    if err := viper.ReadInConfig(); err != nil {
-		fmt.Println("Error reading config file:", err)
-        return
-    }
-	
-	var shabu sshabu.Shabu
-	err := viper.Unmarshal(&shabu)
-    check(err)
-	err = shabu.Boil()
-    check(err)
-	// fmt.Printf("%+v",shabu)
-	// fmt.Printf("%v\n", shabu)
-	buf := new(bytes.Buffer)
-	err = sshabu.RenderTemplate(shabu, buf)
-	check(err)
-	// fmt.Println(buf.String())
-
-	// TESTED BY ssh -F destination.txt host1 
-    err = os.WriteFile(".config.tmp", buf.Bytes(), 0600)
-    check(err)
 	// shabu := sshabu.Shabu{
 	// 	Hosts: []sshabu.Host{
 	// 		{
