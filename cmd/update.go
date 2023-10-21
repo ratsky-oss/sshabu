@@ -39,8 +39,8 @@ func init() {
 		secondFile compare.Bites
 	)
 
-	firstFile.TakeBites("./.sshabu")
-	secondFile.TakeBites("./.sshabu1")
+	firstFile.TakeBites("./test.txt")
+	secondFile.TakeBites("./test2.txt")
 	compare.PrintCompareStrings(firstFile, secondFile)	
 	
 	fmt.Println("-----------------------------------")
