@@ -49,7 +49,7 @@ to quickly create a Cobra application.`,
 		// fmt.Println(buf.String())
 	
 		// TESTED BY ssh -G -F destination.txt host1 
-		err = os.WriteFile(".config.tmp", buf.Bytes(), 0600)
+		err = os.WriteFile(opensshDestconfigFile, buf.Bytes(), 0600)
 		if err != nil{
 			return err
 		}

@@ -1,0 +1,26 @@
+# -----------------------
+# RATSKY SSHABU
+
+ForwardAgent true
+LogLevel VERBOSE
+PasswordAuthentication yes
+
+Host AAAAAAkjfkjkjfhggk
+Host AAAAAA
+Host host2
+    Hostname host2.example.com
+    IdentityFile /path/to/key2
+    Port 2222
+    
+Host host1
+    Hostname host1.example.com
+    IdentityFile /path/to/key1
+    
+Host tetetete
+    IdentityFile /path/to/key1
+    
+Host host3
+    Hostname host3.example.com
+    IdentityFile /path/to/key3
+    Port 2222
+    

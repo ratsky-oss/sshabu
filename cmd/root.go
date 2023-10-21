@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 alvtsky github.com/Ra-sky
-
 */
 package cmd
 
@@ -10,11 +9,11 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
 	// "sshabu/pkg"
 )
 
 var cfgFile string
+var opensshDestconfigFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -48,10 +47,10 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sshabu.yaml)")
-
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	opensshDestconfigFile = "/Users/alivitskiy/Documents/Code/sshabu/.config.tmp"
 }
 
 // initConfig reads in config file and ENV variables if set.
