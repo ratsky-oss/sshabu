@@ -12,12 +12,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-func check(e error) {
-    if e != nil {
-        panic(e)
-    }
-
-}
 // applyCmd represents the apply command
 var applyCmd = &cobra.Command{
 	Use:   "apply",
