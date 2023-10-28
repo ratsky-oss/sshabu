@@ -35,7 +35,12 @@
 
 # Installation
 
+## Usage
+<!-- TODO -->
+
 ## Configuration
+
+All unmentioned opions will be inherited from parent(s) groups 'till top group in <Group> derictive
 
 > Config path 
 
@@ -56,7 +61,7 @@ Hosts:
 ### \<Host>
 
 ```
-Name: <string>
+Name: <string>(must be unique)    #alias for group options 
 <Option>
 ```
 ### \<Group>
@@ -79,12 +84,16 @@ https://linux.die.net/man/5/ssh_config \
  <!-- // TODO: Host is generally the same as Name -->
 
 ```
-# 
 HostName: <str>
 IdentityFile: <str>
+...
 ```
-
-> Host wildcards?? 
+> Suggestion - "Host" better be unique if used \
+> Considerations: \
+> Host wildcards?? \
+> Using "Host" inside:
+> - "GlabalOptions" is useless
+> - "\<Host>" will override \<Host>."Name" section in destination openssh config
 
 ### Configuration example
 
@@ -124,10 +133,6 @@ Hosts:
     IdentityFile: /path/to/key2
     Port: 2222
 ```
-
-# Usage
-
-<!-- TODO -->
 
 # License
 
