@@ -112,6 +112,7 @@ type Options struct {
     // *GSSAPIDelegateCredentials            bool          `mapstructure:"GSSAPIDelegateCredentials,omitempty"`
     HashKnownHosts                       Option          `mapstructure:"hashknownhosts,omitempty"`
     // *HashKnownHosts                       bool          `mapstructure:"HashKnownHosts,omitempty"`
+    // TODO: Host is generally the same as Name
     Host                                 Option        `mapstructure:"host,omitempty"`
     HostbasedAcceptedAlgorithms          Option        `mapstructure:"hostbasedacceptedalgorithms,omitempty"`
     HostbasedAuthentication              Option          `mapstructure:"hostbasedauthentication,omitempty"`
