@@ -32,7 +32,7 @@ type Difference struct {
 
 type Bites struct {
 	length       int
-	content      []string
+	Content      []string
 }
 
 // External functions
@@ -50,7 +50,7 @@ func (bites *Bites) TakeBites(path string) {
         lineArray = append(lineArray, line)
     }
 
-    bites.content = lineArray
+    bites.Content = lineArray
     bites.length = len(lineArray)
 }
 
@@ -72,7 +72,7 @@ func check(e error) {
 
 func transformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
     var result []string
-    for index, line := range secondBites.content {
+    for index, line := range secondBites.Content {
         color := White
         resultStr := ""
         resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
@@ -107,21 +107,21 @@ func transformDifferencesToReadableFormat(differences []Difference, firstBites B
 func diffBites(bites1, bites2 Bites) []Difference{
     var differences []Difference
     maxLen := 0
-    for _, line := range bites1.content {
+    for _, line := range bites1.Content {
         if len(line) > maxLen {
             maxLen = len(line)
         }
     }
 
-    lcsMatrix := make([][]int, len(bites1.content)+1)
+    lcsMatrix := make([][]int, len(bites1.Content)+1)
     for i := range lcsMatrix {
-        lcsMatrix[i] = make([]int, len(bites2.content)+1)
+        lcsMatrix[i] = make([]int, len(bites2.Content)+1)
     }
 
     // Построение матрицы LCS
-    for i := 1; i <= len(bites1.content); i++ {
-        for j := 1; j <= len(bites2.content); j++ {
-            if bites1.content[i-1] == bites2.content[j-1] {
+    for i := 1; i <= len(bites1.Content); i++ {
+        for j := 1; j <= len(bites2.Content); j++ {
+            if bites1.Content[i-1] == bites2.Content[j-1] {
                 lcsMatrix[i][j] = lcsMatrix[i-1][j-1] + 1
             } else {
                 lcsMatrix[i][j] = max(lcsMatrix[i-1][j], lcsMatrix[i][j-1])
@@ -129,16 +129,16 @@ func diffBites(bites1, bites2 Bites) []Difference{
         }
     }
 
-    i, j := len(bites1.content), len(bites2.content)
+    i, j := len(bites1.Content), len(bites2.Content)
     for i > 0 || j > 0 {
-        if i > 0 && j > 0 && bites1.content[i-1] == bites2.content[j-1] {
+        if i > 0 && j > 0 && bites1.Content[i-1] == bites2.Content[j-1] {
             i--
             j--
         } else if j > 0 && (i == 0 || lcsMatrix[i][j-1] >= lcsMatrix[i-1][j]) {
-            differences = append([]Difference{{lineNumber: j, line: bites2.content[j-1], Added: true}}, differences...)
+            differences = append([]Difference{{lineNumber: j, line: bites2.Content[j-1], Added: true}}, differences...)
             j--
         } else if i > 0 && (j == 0 || lcsMatrix[i][j-1] < lcsMatrix[i-1][j]) {
-            differences = append([]Difference{{lineNumber: i, line: bites1.content[i-1], Added: false}}, differences...)
+            differences = append([]Difference{{lineNumber: i, line: bites1.Content[i-1], Added: false}}, differences...)
             i--
         }
     }
