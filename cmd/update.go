@@ -23,8 +23,6 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 Run: func(cmd *cobra.Command, args []string) {
-    fmt.Println("-----------------------------------")
-	
     var (
         firstFile compare.Bites
         secondFile compare.Bites
@@ -32,7 +30,6 @@ Run: func(cmd *cobra.Command, args []string) {
 
     firstFile.TakeBites("./test.txt")
     secondFile.TakeBites("./test2.txt")
-    fmt.Println(secondFile)
 	compare.PrintCompareStrings(firstFile, secondFile)	
 		
     fmt.Println("\nDo you want to overwrite? (yes/no): ")
@@ -46,8 +43,6 @@ Run: func(cmd *cobra.Command, args []string) {
     } else {
         fmt.Println("Action canceled.")
     }
-
-    fmt.Println("-----------------------------------")
 },
 }
 
