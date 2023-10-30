@@ -30,7 +30,7 @@ to quickly create a Cobra application.`,
 			sshabu.ConfigExample()
 			err = os.MkdirAll(home+"/.sshabu/", 0750)
 			cobra.CheckErr(err)
-			err = os.WriteFile(home+"/.sshabu.yaml", []byte(sshabu.ConfigExample()), 0660)
+			err = os.WriteFile(home+"/.sshabu/sshabu.yaml", []byte(sshabu.ConfigExample()), 0660)
 			cobra.CheckErr(err)
 		}
 		},

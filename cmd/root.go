@@ -58,13 +58,14 @@ func init() {
 func initConfig() {
 	if cfgFile != "" {
 		// Use config file from the flag.
+		conf_path = cfgFile
 		viper.SetConfigFile(cfgFile)
 	} else {
 		// Search config in home directory with name ".sshabu" (without extension).
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".sshabu")
+		viper.SetConfigName("sshabu")
+		viper.AddConfigPath("$PWD")
 		viper.AddConfigPath("$HOME/.sshabu")
-		viper.AddConfigPath(".sshabu")
 	}
 
 	// If a config file is found, read it in.
