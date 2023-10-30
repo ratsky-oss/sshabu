@@ -14,6 +14,7 @@ import (
 
 var cfgFile string
 var opensshDestconfigFile string
+var conf_path string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -59,21 +60,16 @@ func initConfig() {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Find home directory.
-		// home, err := os.UserHomeDir()
-		home, err := os.Getwd()
-		cobra.CheckErr(err)
-
 		// Search config in home directory with name ".sshabu" (without extension).
-		viper.AddConfigPath(home)
 		viper.SetConfigType("yaml")
 		viper.SetConfigName(".sshabu")
+		viper.AddConfigPath("$HOME/.sshabu")
+		viper.AddConfigPath(".sshabu")
 	}
-
-	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		conf_path = viper.ConfigFileUsed()
+		fmt.Fprintln(os.Stderr, "Using config file:", conf_path)
 	}
 }

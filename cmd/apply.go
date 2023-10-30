@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"bytes"
-	"fmt"
+	// "fmt"
 	"sshabu/pkg"
 	"os"
 	"github.com/spf13/cobra"
@@ -23,12 +23,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		viper.SetConfigType("yaml")  // Set the config file type
-		viper.SetConfigFile(".sshabu") // Set the config file name
-		if err := viper.ReadInConfig(); err != nil {
-			fmt.Println("Error reading config file:", err)
-			return err
-		}
+		initConfig()
 		
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
