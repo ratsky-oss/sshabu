@@ -4,9 +4,6 @@ import (
 	"os"
 	"bufio"
 	"fmt"
-	"strconv"
-	"strings"
-	// "sort"
 )
 
 const (
@@ -22,104 +19,47 @@ const (
 	Added ChangeType = iota
     Deleted
     Modified
+    Moved
 )
 
 type ChangeType int
 
 type Difference struct {
-	lineNumber int
+    lineNumber int
     line       string
-    changeType ChangeType
-}
-
-type Bite struct {
-    number  int
-    content string
+    Added      bool
 }
 
 type Bites struct {
 	length       int
-	content      []Bite
+	content      []string
 }
 
 // External functions
 func (bites *Bites) TakeBites(path string) {
-	var lineArray []Bite
+    var lineArray []string
 
-	file, err := os.Open(path)
-	check(err)
-	defer file.Close()
+    file, err := os.Open(path)
+    check(err)
+    defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	lineNumber := 0
-	for scanner.Scan() {
-		line := scanner.Text()
-		lineNumber++
-		if !isWhitespaceOrEmpty(line) {
-			bite := Bite{
-				number:  lineNumber,
-				content: line,
-			}
-			lineArray = append(lineArray, bite)
-		}
-	}
+    scanner := bufio.NewScanner(file)
 
-	bites.content = lineArray
-	bites.length = len(lineArray)
+    for scanner.Scan() {
+        line := scanner.Text()
+        lineArray = append(lineArray, line)
+    }
+
+    bites.content = lineArray
+    bites.length = len(lineArray)
 }
 
 func PrintCompareStrings(firstBites Bites, secondBites Bites) {
     differences := diffBites(firstBites, secondBites)
-    differences = removeDuplicateDifferences(differences)
+    resultStrings := transformDifferencesToReadableFormat(differences, firstBites, secondBites)
 
-    addedCount := 0
-    deletedCount := 0
-    modifiedCount := 0
-
-    for _, diff := range differences {
-        switch diff.changeType {
-        case Added:
-            addedCount++
-        case Deleted:
-            deletedCount++
-        case Modified:
-            modifiedCount++
-        }
-    }
-
-    // Определяем максимальную длину строки в firstBites.content
-    maxStringLen := 0
-    for _, bite := range firstBites.content {
-        if len(bite.content) > maxStringLen {
-            maxStringLen = len(bite.content)
-        }
-    }
-
-    fmt.Println("-----------")
-    fmt.Printf("Total Added Lines: %d\n", addedCount)
-    fmt.Printf("Total Deleted Lines: %d\n", deletedCount)
-    fmt.Printf("Total Modified Lines: %d\n", modifiedCount/2) // Since a modification is represented by two entries
-    fmt.Println("-----------")
-    fmt.Println("Changes in lines:")
-
-    for _, diff := range differences {
-        switch diff.changeType {
-        case Added:
-            fmt.Println(strconv.Itoa(diff.lineNumber) + ": " + Green + diff.line + White)
-        case Deleted:
-            fmt.Println(strconv.Itoa(diff.lineNumber) + ": " + Red + diff.line + White)
-        case Modified:
-            firstline := ""
-            if diff.lineNumber <= len(firstBites.content) {
-                firstline = firstBites.content[diff.lineNumber-1].content
-            }
-            secondline := ""
-            if diff.lineNumber <= len(secondBites.content) {
-                secondline = secondBites.content[diff.lineNumber-1].content
-            }
-
-            fmt.Println(strconv.Itoa(diff.lineNumber) + ": " + Red + firstline + White + strings.Repeat(" ", maxStringLen-len(firstline)) + " --> " + Green + secondline + White)
-        }
+    for _,line := range(resultStrings) {
+        fmt.Println(line)
     }
 }
 
@@ -130,85 +70,90 @@ func check(e error) {
     }
 }
 
-func indent(input string, indent int) string {
-	padding := indent + len(input)
-	return fmt.Sprintf("% "+strconv.Itoa(padding)+"s", input)
+func transformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
+    var result []string
+    for index, line := range secondBites.content {
+        color := White
+        resultStr := ""
+        resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
+        for _, diff := range differences {
+            if diff.lineNumber == index+1 {
+                if diff.Added {
+                    color = Green
+                    resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
+                } else {
+                    color = Red
+                    resultStr = fmt.Sprintf("%d: %s%s\n   %s%s%s", index+1, color, diff.line ,Green, line, White)
+                }
+                break
+            }
+        }
+        result = append(result, resultStr)
+    }
+    
+    if len(result) < firstBites.length{
+        for _, diff := range differences {
+            if diff.lineNumber > len(result){
+                color := Red
+                resultStr := fmt.Sprintf("%d: %s%s%s", diff.lineNumber, color, diff.line, White)
+                result = append(result, resultStr)
+            }
+        }
+    }
+
+    return result
 }
 
-func diffBites(bites1, bites2 Bites) []Difference {
+func diffBites(bites1, bites2 Bites) []Difference{
     var differences []Difference
-    i, j := 0, 0
-
-    for i < bites1.length && j < bites2.length {
-        if bites1.content[i].content == bites2.content[j].content {
-            i++
-            j++
-            continue
-        }
-
-        added := false
-        deleted := false
-
-        for k := j; k < bites2.length && !added; k++ {
-            if bites1.content[i].content == bites2.content[k].content {
-                for l := j; l < k; l++ {
-                    differences = append(differences, Difference{lineNumber: bites2.content[l].number, line: bites2.content[l].content, changeType: Added})
-                    j++
-                }
-                added = true
-            }
-        }
-
-        for k := i; k < bites1.length && !deleted && !added; k++ {
-            if bites1.content[k].content == bites2.content[j].content {
-                for l := i; l < k; l++ {
-                    differences = append(differences, Difference{lineNumber: bites1.content[l].number, line: bites1.content[l].content, changeType: Deleted})
-                    i++
-                }
-                deleted = true
-            }
-        }
-
-        if !added && !deleted {
-            differences = append(differences, Difference{lineNumber: bites1.content[i].number, line: bites1.content[i].content, changeType: Modified})
-            i++
-            differences = append(differences, Difference{lineNumber: bites2.content[j].number, line: bites2.content[j].content, changeType: Modified})
-            j++
+    maxLen := 0
+    for _, line := range bites1.content {
+        if len(line) > maxLen {
+            maxLen = len(line)
         }
     }
 
-    for ; i < bites1.length; i++ {
-        differences = append(differences, Difference{lineNumber: bites1.content[i].number, line: bites1.content[i].content, changeType: Deleted})
+    lcsMatrix := make([][]int, len(bites1.content)+1)
+    for i := range lcsMatrix {
+        lcsMatrix[i] = make([]int, len(bites2.content)+1)
     }
 
-    for ; j < bites2.length; j++ {
-        differences = append(differences, Difference{lineNumber: bites2.content[j].number, line: bites2.content[j].content, changeType: Added})
+    // Построение матрицы LCS
+    for i := 1; i <= len(bites1.content); i++ {
+        for j := 1; j <= len(bites2.content); j++ {
+            if bites1.content[i-1] == bites2.content[j-1] {
+                lcsMatrix[i][j] = lcsMatrix[i-1][j-1] + 1
+            } else {
+                lcsMatrix[i][j] = max(lcsMatrix[i-1][j], lcsMatrix[i][j-1])
+            }
+        }
+    }
+
+    i, j := len(bites1.content), len(bites2.content)
+    for i > 0 || j > 0 {
+        if i > 0 && j > 0 && bites1.content[i-1] == bites2.content[j-1] {
+            i--
+            j--
+        } else if j > 0 && (i == 0 || lcsMatrix[i][j-1] >= lcsMatrix[i-1][j]) {
+            differences = append([]Difference{{lineNumber: j, line: bites2.content[j-1], Added: true}}, differences...)
+            j--
+        } else if i > 0 && (j == 0 || lcsMatrix[i][j-1] < lcsMatrix[i-1][j]) {
+            differences = append([]Difference{{lineNumber: i, line: bites1.content[i-1], Added: false}}, differences...)
+            i--
+        }
     }
 
     return differences
 }
 
-
-func isWhitespaceOrEmpty(s string) bool {
-    return len(strings.TrimSpace(s)) == 0
-}
-
-func removeDuplicateDifferences(diffs []Difference) []Difference {
-    var uniqueDiffs []Difference
-    seenModified := make(map[int]bool)
-
-    for _, diff := range diffs {
-        if diff.changeType == Modified && seenModified[diff.lineNumber] {
-            continue
-        }
-        if diff.changeType == Modified {
-            seenModified[diff.lineNumber] = true
-        }
-        uniqueDiffs = append(uniqueDiffs, diff)
+func max(a, b int) int {
+    if a > b {
+        return a
     }
-
-    return uniqueDiffs
+    return b
 }
+
+
 
 
 

@@ -24,7 +24,18 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("update called")
+		fmt.Println("-----------------------------------")
+	
+		var (
+			firstFile compare.Bites
+			secondFile compare.Bites
+		)
+	
+		firstFile.TakeBites("./test.txt")
+		secondFile.TakeBites("./test2.txt")
+		compare.PrintCompareStrings(firstFile, secondFile)	
+		
+		fmt.Println("-----------------------------------")
 	},
 }
 
@@ -32,18 +43,7 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(updateCmd)
-	fmt.Println("-----------------------------------")
-	
-	var (
-		firstFile compare.Bites
-		secondFile compare.Bites
-	)
 
-	firstFile.TakeBites("./test.txt")
-	secondFile.TakeBites("./test2.txt")
-	compare.PrintCompareStrings(firstFile, secondFile)	
-	
-	fmt.Println("-----------------------------------")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
