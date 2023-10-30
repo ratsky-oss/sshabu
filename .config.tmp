@@ -1,7 +1,6 @@
 # -----------------------
 # RATSKY SSHABU
-
-
+jsdf
 Host project1-test
     Hostname 192.168.1.2
     IdentityFile /.ssh/id_rsa_work_p1

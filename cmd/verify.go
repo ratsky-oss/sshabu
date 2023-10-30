@@ -23,7 +23,8 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	RunE: func(cmd *cobra.Command, args []string) error{
+RunE: func(cmd *cobra.Command, args []string) error{
+		fmt.Println("Verifing...")
 		file, err := os.Open(opensshDestconfigFile)
 		if err != nil {
 			fmt.Println("Error reading file:", err)
@@ -37,13 +38,15 @@ to quickly create a Cobra application.`,
 			return err
 		}
 		for _, value := range hostValues {
-			fmt.Println(value)
 			cmd := exec.Command("bash","-c","ssh -G -F .config.tmp " + value)
+			cmd.Stderr = os.Stderr
+			cmd.Run()
 			if err := cmd.Run(); err != nil {
 				// TODO more info about error
-				return err
+				break
 			}
 		}
+		fmt.Println("Seems legit to me")
 		return nil
 	},
 }
