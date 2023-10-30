@@ -2,9 +2,21 @@ package sshabu
 
 import (
 	"bufio"
+	"fmt"
 	"io"
+	"os"
+	"os/exec"
 	"strings"
 )
+
+func OpensshCheck(cfg string){
+    fmt.Println("Verifing...")
+    vcmd := exec.Command("bash","-c","ssh -G -F " + cfg)
+    vcmd.Stderr = os.Stderr
+    if err := vcmd.Run(); err == nil{
+        fmt.Println("Seems legit to me")
+    }
+}
 
 func DestinationHosts(r io.Reader) ([]string, error) {
     scanner := bufio.NewScanner(r)
