@@ -48,27 +48,22 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sshabu.yaml)")
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
 	opensshDestconfigFile = "/Users/alivitskiy/Documents/Code/sshabu/.config.tmp"
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
-		// Use config file from the flag.
 		conf_path = cfgFile
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Search config in home directory with name ".sshabu" (without extension).
 		viper.SetConfigType("yaml")
 		viper.SetConfigName("sshabu")
 		viper.AddConfigPath("$PWD")
 		viper.AddConfigPath("$HOME/.sshabu")
 	}
 
-	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		conf_path = viper.ConfigFileUsed()
 		fmt.Fprintln(os.Stderr, "Using config file:", conf_path)
