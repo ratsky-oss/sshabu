@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"bytes"
-	// "fmt"
+	"fmt"
 	"sshabu/pkg"
-	"os"
+    "os"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -23,7 +23,14 @@ var applyCmd = &cobra.Command{
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
 		cobra.CheckErr(err)
-
+		if shabu.AreAllUnique(){
+			fmt.Println("YAML seems OK")
+			}  else {
+			fmt.Println("Error: 'Name' Fields must be unique")
+			os.Exit(1)
+		}
+		// names := sshabu.FindNamesInShabu(shabu)
+		
 		err = shabu.Boil()
 		cobra.CheckErr(err)
 
@@ -31,9 +38,9 @@ var applyCmd = &cobra.Command{
 		err = sshabu.RenderTemplate(shabu, buf)
 		cobra.CheckErr(err)
 
-		// TESTED BY ssh -G -F destination.txt host1 
-		err = os.WriteFile(opensshDestconfigFile, buf.Bytes(), 0600)
+		err = os.WriteFile(opensshTmpFile, buf.Bytes(), 0600)
 		cobra.CheckErr(err)
+		sshabu.OpensshCheck(opensshTmpFile)
 	},
 }
 

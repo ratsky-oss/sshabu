@@ -9,13 +9,16 @@ import (
 	"strings"
 )
 
-func OpensshCheck(cfg string){
-    fmt.Println("Verifing...")
-    vcmd := exec.Command("bash","-c","ssh -G -F " + cfg)
+func OpensshCheck(openssh_cfg string) error {
+    fmt.Println("Verifing result...")
+    vcmd := exec.Command("bash","-c","ssh -GTF " + openssh_cfg + " test")
     vcmd.Stderr = os.Stderr
-    if err := vcmd.Run(); err == nil{
-        fmt.Println("Seems legit to me")
+    vcmd.Stdin = nil
+    if err := vcmd.Run(); err != nil{
+        return err
     }
+    fmt.Println("Seems legit to me")
+    return nil
 }
 
 func DestinationHosts(r io.Reader) ([]string, error) {

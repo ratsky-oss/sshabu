@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -13,8 +14,8 @@ import (
 )
 
 var cfgFile string
+var opensshTmpFile string
 var opensshDestconfigFile string
-var conf_path string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -31,12 +32,7 @@ to quickly create a Cobra application.`,
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
-func check(e error) {
-    if e != nil {
-        panic(e)
-    }
 
-}
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
@@ -61,7 +57,6 @@ func init() {
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
-		conf_path = cfgFile
 		viper.SetConfigFile(cfgFile)
 	} else {
 		viper.SetConfigType("yaml")
@@ -71,7 +66,10 @@ func initConfig() {
 	}
 
 	if err := viper.ReadInConfig(); err == nil {
-		conf_path = viper.ConfigFileUsed()
-		fmt.Fprintln(os.Stderr, "Using config file:", conf_path)
+		cfgFile = viper.ConfigFileUsed()
+		fmt.Fprintln(os.Stderr, "Using config file:", cfgFile)
+		cfgPath := filepath.Dir(cfgFile)
+		opensshTmpFile = cfgPath+"/openssh.tmp"
+		opensshDestconfigFile = cfgPath+"/openssh.config"
 	}
 }
