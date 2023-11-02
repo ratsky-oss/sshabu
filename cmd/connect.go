@@ -15,27 +15,20 @@ import (
 // connectCmd represents the connect command
 var connectCmd = &cobra.Command{
 	Use:   "connect",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Just a wrapper around ssh command",
+	Long: `Generally just a wrapper around ssh command with autocompletion from sshabu config`,
 ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	if len(args) != 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
 
-		file, err := os.Open(opensshDestconfigFile)
-		if err != nil {
-			fmt.Println("Error reading file:", err)
-		}
+		file, _ := os.Open(opensshDestconfigFile)
+
 		defer file.Close()
 
 		hostValues, err := sshabu.DestinationHosts(file)
 		if err != nil {
-			fmt.Println("Error parsing file:", err)
+			file.Close()
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
 		return hostValues, cobra.ShellCompDirectiveNoFileComp

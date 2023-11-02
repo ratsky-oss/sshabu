@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-    "fmt"
 )
 
 func OpensshCheck(openssh_cfg string) error {
