@@ -15,11 +15,60 @@ func inheritOptions(src, dst interface{}) {
 	}
 }
 
+func findNamesInStruct(value reflect.Value, names *[]string) {
+	if value.Kind() == reflect.Ptr {
+		value = value.Elem()
+	}
+
+	if value.Kind() == reflect.Struct {
+		structType := value.Type()
+
+		for i := 0; i < value.NumField(); i++ {
+			fieldValue := value.Field(i)
+			fieldType := structType.Field(i)
+
+			if fieldType.Name == "Name" {
+				*names = append(*names, fieldValue.String())
+			}
+
+			findNamesInStruct(fieldValue, names)
+		}
+	} else if value.Kind() == reflect.Slice {
+		for i := 0; i < value.Len(); i++ {
+			element := value.Index(i)
+			findNamesInStruct(element, names)
+		}
+	}
+}
+
 type Shabu struct{
     Options     Options     `mapstructure:"globaloptions,omitempty"`
     Hosts       []Host      `mapstructure:"hosts,omitempty"`
     Groups      []Group     `mapstructure:"groups,omitempty"`
+    // names       []string
 }
+
+func (shabu Shabu) FindNamesInShabu() []string {
+	var names []string
+
+	findNamesInStruct(reflect.ValueOf(shabu), &names)
+
+	return names
+}
+
+func (shabu Shabu) AreAllUnique() bool {
+	seen := make(map[string]bool)
+    items := shabu.FindNamesInShabu()
+	for _, item := range items {
+		if seen[item] {
+			return false // The item is not unique
+		}
+		seen[item] = true
+	}
+
+	return true // All items are unique
+}
+
 
 func (shabu *Shabu) Boil() error {
     for i := range shabu.Groups {
