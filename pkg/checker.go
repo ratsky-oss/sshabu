@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+    "fmt"
 )
 
 func OpensshCheck(cfg string){
@@ -42,4 +43,23 @@ func DestinationHosts(r io.Reader) ([]string, error) {
     }
 
     return hostValues, nil
+}
+
+func AskForConfirmation() bool {
+    var response string
+    _, err := fmt.Scanln(&response)
+    if err != nil {
+        fmt.Println("Please enter 'yes' or 'no'.")
+        return false
+    }
+    response = strings.ToLower(response)
+	switch response {
+	case "yes", "y":
+		return true
+	case "no", "n":
+		return false
+	default:
+		fmt.Println("Please enter 'yes' or 'no'.")
+        return false
+	}
 }

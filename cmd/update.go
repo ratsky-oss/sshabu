@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"sshabu/pkg/compare"
+	"sshabu/pkg"
 	"github.com/spf13/cobra"
 	"os"
     "strings"
@@ -33,7 +34,7 @@ Run: func(cmd *cobra.Command, args []string) {
 	compare.PrintCompareStrings(firstFile, secondFile)	
 		
     fmt.Println("\nDo you want to overwrite? (yes/no): ")
-    if askForConfirmation() {
+    if sshabu.AskForConfirmation() {
         err := os.WriteFile("./test.txt", []byte(strings.Join(secondFile.Content, "\n")), 0644)
         if err != nil {
             fmt.Println("Error overwriting the file:", err)
@@ -44,25 +45,6 @@ Run: func(cmd *cobra.Command, args []string) {
         fmt.Println("Action canceled.")
     }
 },
-}
-
-func askForConfirmation() bool {
-    var response string
-    _, err := fmt.Scanln(&response)
-    if err != nil {
-        fmt.Println("Please enter 'yes' or 'no'.")
-        return false
-    }
-    response = strings.ToLower(response)
-	switch response {
-	case "yes", "y":
-		return true
-	case "no", "n":
-		return false
-	default:
-		fmt.Println("Please enter 'yes' or 'no'.")
-        return false
-	}
 }
 
 
