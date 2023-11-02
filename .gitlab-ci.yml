@@ -1,5 +1,5 @@
 .build:
-  image: docker pull golang:1.21-alpine3.17
+  image: golang:1.21-alpine3.17
   tags:
     - docker
     - walnut
