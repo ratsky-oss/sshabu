@@ -12,7 +12,7 @@ stages:
   # - deploy
 
 build: 
-  stage: staging
+  stage: building
   extends: .build
   script:
     - GOOS=linux GOARCH=amd64 go build -o $GO_PROJECT-linux-amd64
