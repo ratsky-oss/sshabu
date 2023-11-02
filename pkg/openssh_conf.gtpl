@@ -178,5 +178,31 @@ Host {{ .Name }}
 {{- if .SetEnv }}SetEnv {{ .SetEnv }}
 {{ end }}
 {{- if .StdinNull }}StdinNull {{ .StdinNull }}
-{{- end -}}
+{{ end }}
+{{- if .StreamLocalBindMask }}StreamLocalBindMask {{.StreamLocalBindMask}}
+{{ end }}
+{{- if .StreamLocalBindUnlink }}StreamLocalBindUnlink {{.StreamLocalBindUnlink}}
+{{ end }}
+{{- if .StrictHostKeyChecking }}StrictHostKeyChecking {{.StrictHostKeyChecking}}
+{{ end }}
+{{- if .TCPKeepAlive }}TCPKeepAlive {{.TCPKeepAlive}}
+{{ end }}
+{{- if .Tunnel }}Tunnel {{.Tunnel}}
+{{ end }}
+{{- if .TunnelDevice }}TunnelDevice {{.TunnelDevice}}
+{{ end }}
+{{- if .UpdateHostKeys }}UpdateHostKeys {{.UpdateHostKeys}}
+{{ end }}
+{{- if .UseKeychain }}UseKeychain {{.UseKeychain}}
+{{ end }}
+{{- if .User }}User {{.User}}
+{{ end }}
+{{- if .UserKnownHostsFile }}UserKnownHostsFile {{.UserKnownHostsFile}}
+{{ end }}
+{{- if .VerifyHostKeyDNS }}VerifyHostKeyDNS {{.VerifyHostKeyDNS}}
+{{ end }}
+{{- if .VisualHostKey }}VisualHostKey {{.VisualHostKey}}
+{{ end }}
+{{- if .XAuthLocation }}XAuthLocation {{.XAuthLocation}}
+{{ end }}
 {{- end -}}
