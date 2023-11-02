@@ -7,6 +7,7 @@ import (
 	// "fmt"
 	// "log"
 	_ "embed"
+	"fmt"
 	"os"
 	sshabu "sshabu/pkg"
 
@@ -24,15 +25,20 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(conf_path) == 0{	
-			home, err := os.UserHomeDir()
-			cobra.CheckErr(err)
-			sshabu.ConfigExample()
+		home, err := os.UserHomeDir()
+		cobra.CheckErr(err)
+		if _, err := os.Stat(home+"/.sshabu/"); os.IsNotExist(err) {
+			fmt.Println("Creating base paths")
 			err = os.MkdirAll(home+"/.sshabu/", 0750)
 			cobra.CheckErr(err)
 			err = os.WriteFile(home+"/.sshabu/sshabu.yaml", []byte(sshabu.ConfigExample()), 0660)
+			fmt.Println("Success")
 			cobra.CheckErr(err)
+			} else {
+				fmt.Println("Base sshabu path already exists")
+				fmt.Println("Doing nothing")
 		}
+
 		},
 	}
 

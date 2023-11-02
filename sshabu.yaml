@@ -29,6 +29,7 @@ Groups:
             Port: 2222
           - Name: project1-prod
             HostName: 192.168.1.3
+            Host: "SOME STRANGE USAGE"
             Port: 2223
           - Name: project1-stage
             HostName: 192.168.1.4

@@ -1,12 +1,13 @@
 # -----------------------
 # RATSKY SSHABU
-jsdf
+
+
 Host project1-test
     Hostname 192.168.1.2
     IdentityFile /.ssh/id_rsa_work_p1
     Port 2222
     
-Host project1-prod
+Host sdf
     Hostname 192.168.1.3
     IdentityFile /.ssh/id_rsa_work_p1
     Port 2223

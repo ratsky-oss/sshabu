@@ -20,7 +20,11 @@
 {{- end -}}
 {{- /*----------------------------------------------*/ -}}
 {{ define "host" }}
+{{- if .Options.Host }}
+Host {{ .Options.Host }}
+{{- else }}
 Host {{ .Name }}
+{{- end -}}
 {{- with .Options }}
 {{ include "option" . | indent 4 }}
 {{- end -}}
@@ -94,8 +98,6 @@ Host {{ .Name }}
 {{- if .GSSAPIDelegateCredentials }}GSSAPIDelegateCredentials {{ .GSSAPIDelegateCredentials }}
 {{ end }}
 {{- if .HashKnownHosts }}HashKnownHosts {{ .HashKnownHosts }}
-{{ end }}
-{{- if .Host }}Host {{ .Host }}
 {{ end }}
 {{- if .HostbasedAcceptedAlgorithms }}HostbasedAcceptedAlgorithms {{ .HostbasedAcceptedAlgorithms }}
 {{ end }}
