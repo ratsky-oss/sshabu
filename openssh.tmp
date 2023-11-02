@@ -1,0 +1,33 @@
+# -----------------------
+# RATSKY SSHABU
+
+
+Host project1-test
+    Hostname 192.168.1.2
+    IdentityFile /.ssh/id_rsa_work_p1
+    Port 2222
+    User alivitskiy
+    
+Host SOME STRANGE USAGE
+    Hostname 192.168.1.3
+    IdentityFile /.ssh/id_rsa_work_p1
+    Port 2223
+    User alivitskiy
+    
+Host project1-stage
+    Hostname 192.168.1.4
+    IdentityFile /.ssh/id_rsa_work_p1
+    Port 2224
+    User alivitskiy
+    
+Host project2-dev
+    Hostname 192.168.11.3
+    IdentityFile /.ssh/id_rsa_work
+    User alivitskiy
+    
+Host home-gitlab
+    Hostname gitlab.ratsky.local
+    
+Host home-nextcloud
+    Hostname nc.ratsky.local
+    

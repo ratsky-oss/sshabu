@@ -1,24 +1,35 @@
 # -----------------------
-# RATSKY
-
-{{ with .Options -}}
-{{ template "option" . }}
+# RATSKY SSHABU
+{{ with .Options }}
+{{ include "option" . }}
 {{- end -}}
-
-{{- range .Hosts }}
+{{- range .Hosts -}}
 {{ include "host" . }}
-{{ end }}
-{{/*----------------------------------------------*/}}
+{{- end -}}
+{{- range .Groups -}}
+{{ include "group" . }}
+{{- end -}}
+{{- /*----------------------------------------------*/ -}}
 {{ define "group" }}
-{{ end }}
-{{/*----------------------------------------------*/}}
+{{- range .Hosts -}}
+{{ include "host" . }}
+{{- end -}}
+{{- range .Subgroups -}}
+{{ include "group" . }}
+{{- end -}}
+{{- end -}}
+{{- /*----------------------------------------------*/ -}}
 {{ define "host" }}
+{{- if .Options.Host }}
+Host {{ .Options.Host }}
+{{- else }}
 Host {{ .Name }}
+{{- end -}}
 {{- with .Options }}
 {{ include "option" . | indent 4 }}
-{{- end }}
-{{- end }}
-{{/*----------------------------------------------*/}}
+{{- end -}}
+{{- end -}}
+{{- /*----------------------------------------------*/ -}}
 {{ define "option" -}}
 {{- if .AddKeysToAgent }}AddKeysToAgent {{ .AddKeysToAgent }}
 {{ end }}
@@ -87,8 +98,6 @@ Host {{ .Name }}
 {{- if .GSSAPIDelegateCredentials }}GSSAPIDelegateCredentials {{ .GSSAPIDelegateCredentials }}
 {{ end }}
 {{- if .HashKnownHosts }}HashKnownHosts {{ .HashKnownHosts }}
-{{ end }}
-{{- if .Host }}Host {{ .Host }}
 {{ end }}
 {{- if .HostbasedAcceptedAlgorithms }}HostbasedAcceptedAlgorithms {{ .HostbasedAcceptedAlgorithms }}
 {{ end }}
@@ -169,5 +178,31 @@ Host {{ .Name }}
 {{- if .SetEnv }}SetEnv {{ .SetEnv }}
 {{ end }}
 {{- if .StdinNull }}StdinNull {{ .StdinNull }}
+{{ end }}
+{{- if .StreamLocalBindMask }}StreamLocalBindMask {{.StreamLocalBindMask}}
+{{ end }}
+{{- if .StreamLocalBindUnlink }}StreamLocalBindUnlink {{.StreamLocalBindUnlink}}
+{{ end }}
+{{- if .StrictHostKeyChecking }}StrictHostKeyChecking {{.StrictHostKeyChecking}}
+{{ end }}
+{{- if .TCPKeepAlive }}TCPKeepAlive {{.TCPKeepAlive}}
+{{ end }}
+{{- if .Tunnel }}Tunnel {{.Tunnel}}
+{{ end }}
+{{- if .TunnelDevice }}TunnelDevice {{.TunnelDevice}}
+{{ end }}
+{{- if .UpdateHostKeys }}UpdateHostKeys {{.UpdateHostKeys}}
+{{ end }}
+{{- if .UseKeychain }}UseKeychain {{.UseKeychain}}
+{{ end }}
+{{- if .User }}User {{.User}}
+{{ end }}
+{{- if .UserKnownHostsFile }}UserKnownHostsFile {{.UserKnownHostsFile}}
+{{ end }}
+{{- if .VerifyHostKeyDNS }}VerifyHostKeyDNS {{.VerifyHostKeyDNS}}
+{{ end }}
+{{- if .VisualHostKey }}VisualHostKey {{.VisualHostKey}}
+{{ end }}
+{{- if .XAuthLocation }}XAuthLocation {{.XAuthLocation}}
 {{ end }}
 {{- end -}}
