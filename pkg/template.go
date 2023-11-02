@@ -10,8 +10,14 @@ import (
 	"github.com/Masterminds/sprig/v3"
 )
 
+//go:embed sshabu_example.yaml
+var sshabu_example string
 //go:embed *.gtpl
 var ssh_template string
+
+func ConfigExample() string{
+  return sshabu_example
+}
 
 func RenderTemplate(vars interface{}, out io.Writer) error {
   t := template.New("openssh_config")

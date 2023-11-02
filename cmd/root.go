@@ -1,20 +1,21 @@
 /*
 Copyright © 2023 alvtsky github.com/Ra-sky
-
 */
 package cmd
 
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
 	// "sshabu/pkg"
 )
 
 var cfgFile string
+var opensshTmpFile string
+var opensshDestconfigFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -30,6 +31,7 @@ to quickly create a Cobra application.`,
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
+
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -49,32 +51,27 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sshabu.yaml)")
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	opensshDestconfigFile = "/Users/alivitskiy/Documents/Code/sshabu/.config.tmp"
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
-		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Find home directory.
-		// home, err := os.UserHomeDir()
-		home, err := os.Getwd()
-		cobra.CheckErr(err)
-
-		// Search config in home directory with name ".sshabu" (without extension).
-		viper.AddConfigPath(home)
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".sshabu")
+		viper.SetConfigName("sshabu")
+		viper.AddConfigPath("$PWD")
+		viper.AddConfigPath("$HOME/.sshabu")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		cfgFile = viper.ConfigFileUsed()
+		fmt.Fprintln(os.Stderr, "Using config file:", cfgFile)
+		cfgPath := filepath.Dir(cfgFile)
+		opensshTmpFile = cfgPath+"/openssh.tmp"
+		opensshDestconfigFile = cfgPath+"/openssh.config"
+		os.OpenFile(opensshTmpFile, os.O_RDONLY|os.O_CREATE, 0666)
+		os.OpenFile(opensshDestconfigFile, os.O_RDONLY|os.O_CREATE, 0666)
 	}
 }

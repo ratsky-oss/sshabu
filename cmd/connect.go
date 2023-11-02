@@ -5,9 +5,9 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
+	sshabu "sshabu/pkg"
 
 	"github.com/spf13/cobra"
 )
@@ -15,24 +15,38 @@ import (
 // connectCmd represents the connect command
 var connectCmd = &cobra.Command{
 	Use:   "connect",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(args)
-		shell := exec.Command("/bin/zsh")
-		shell.Stdout = os.Stdout
-		shell.Stdin = os.Stdin
-		shell.Stderr = os.Stderr
-		err := shell.Run()
-		if err != nil {
-			log.Fatalf("command failed: %v", err)
+	Short: "Just a wrapper around ssh command",
+	Long: `Generally just a wrapper around ssh command with autocompletion from sshabu config`,
+ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		fmt.Printf("exiting\n")
+
+		file, _ := os.Open(opensshDestconfigFile)
+
+		defer file.Close()
+
+		hostValues, err := sshabu.DestinationHosts(file)
+		if err != nil {
+			file.Close()
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
+		return hostValues, cobra.ShellCompDirectiveNoFileComp
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+			// Construct the ssh command with -I option
+		sshArgs := append([]string{"-F", opensshDestconfigFile}, args...)
+		fmt.Println("Running SSH command:", "ssh", sshArgs)
+
+		// Execute the SSH command
+		scmd := exec.Command("ssh", sshArgs...)
+		scmd.Stdout = os.Stdout
+		scmd.Stderr = os.Stderr
+		scmd.Stdin = os.Stdin
+		if err := scmd.Run(); err != nil {
+			fmt.Println("Error executing SSH command:", err)
+			os.Exit(1)
+		}
 	},
 }
 

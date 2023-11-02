@@ -1,0 +1,47 @@
+# # ----------------------------------------------------------------------
+# # Default options for all hosts
+# GlobalOptions:
+#   LogLevel: INFO
+# # ----------------------------------------------------------------------
+# # Top level standalone host list
+
+# Hosts: 
+#   - Name: smth_ungrouped                          # Host example
+#     HostName: host.example.com                    # Key: value ssh_config(5) 
+#     User: user2
+#     IdentityFile: /path/to/key2
+#     Port: 2223
+
+## ----------------------------------------------------------------------
+## Top level group list
+Groups:
+  - Name: work                                     # Some top level group
+    Options:                                       # ssh_config(5)
+      User: alivitskiy
+      IdentityFile: /.ssh/id_rsa_work
+    Subgroups:                                     # List of subgroups that will inherit "work" Options
+     - Name: project1
+       Options:
+          IdentityFile: /.ssh/id_rsa_work_p1
+       Hosts:
+          - Name: project1-test
+            HostName: 192.168.1.2
+            Port: 2222
+          - Name: project1-prod
+            HostName: 192.168.1.3
+            Host: "SOME STRANGE USAGE"
+            Port: 2223
+          - Name: project1-stage
+            HostName: 192.168.1.4
+            Port: 2224
+     - Name: project2
+       Hosts:
+          - Name: project2-dev
+            HostName: 192.168.11.3
+
+  - Name: home                                     # Another top group
+    Hosts:
+      - Name: home-gitlab
+        HostName: gitlab.ratsky.local
+      - Name: home-nextcloud
+        HostName: nc.ratsky.local

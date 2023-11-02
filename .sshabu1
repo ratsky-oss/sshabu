@@ -1,6 +1,7 @@
 ---
 GlobalOptions:
-  LogLevel: VERBOSE
+
+  LogLevel: VERBOS
   ForwardAgent: true
   PasswordAuthentication: yes
 
