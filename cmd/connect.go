@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	sshabu "sshabu/pkg"
 
 	"github.com/spf13/cobra"
@@ -40,7 +41,19 @@ ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([
 		return hostValues, cobra.ShellCompDirectiveNoFileComp
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("HI MAN")
+			// Construct the ssh command with -I option
+		sshArgs := append([]string{"-I", opensshDestconfigFile}, args...)
+		fmt.Println("Running SSH command:", "ssh", sshArgs)
+
+		// Execute the SSH command
+		scmd := exec.Command("ssh", sshArgs...)
+		scmd.Stdout = os.Stdout
+		scmd.Stderr = os.Stderr
+		scmd.Stdin = os.Stdin
+		if err := scmd.Run(); err != nil {
+			fmt.Println("Error executing SSH command:", err)
+			os.Exit(1)
+		}
 	},
 }
 
