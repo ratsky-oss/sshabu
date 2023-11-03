@@ -58,6 +58,7 @@ func editFile(filePath string) {
 	text = strings.TrimSpace(text)
 	if strings.ToLower(text) == "y" {
 		applyCmd.Run(applyCmd, []string{})
+		// applyCmd.Execute()
 	} else {
 		fmt.Println("Changes not applied.")
 	}
