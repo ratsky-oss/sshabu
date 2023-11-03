@@ -23,10 +23,6 @@ var applyCmd = &cobra.Command{
 Command is going to ask you confirmation before applying`,
 	Run: func(cmd *cobra.Command, args []string) {
 		
-		if cfgFile != "" {
-			viper.SetConfigFile(cfgFile)
-		}
-		
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
 		cobra.CheckErr(err)

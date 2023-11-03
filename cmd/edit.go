@@ -17,8 +17,8 @@ import (
 // editCmd represents the edit command
 var editCmd = &cobra.Command{
 	Use:   "edit",
-	Short: "A brief description of your command",
-	Long: `...`,
+	Short: "Edit sshabu config file",
+	Long: `For editing you can use vim or nano`,
 	Run: func(cmd *cobra.Command, args []string) {
 		editFile(cfgFile) 
 	},
@@ -57,7 +57,7 @@ func editFile(filePath string) {
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
 	if strings.ToLower(text) == "y" {
-		applyCmd.Run(applyCmd, []string{})
+		// applyCmd.Run(applyCmd, []string{})
 		// applyCmd.Execute()
 	} else {
 		fmt.Println("Changes not applied.")
