@@ -57,6 +57,15 @@ func editFile(filePath string) {
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
 	if strings.ToLower(text) == "y" {
+		cmd := exec.Command("sshabu", "apply")
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Run()
+		if err != nil {
+			fmt.Printf("Failed to run apply: %v\n", err)
+			return
+		}
 		// applyCmd.Run(applyCmd, []string{})
 		// applyCmd.Execute()
 	} else {
