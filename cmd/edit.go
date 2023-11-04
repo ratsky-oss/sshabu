@@ -25,9 +25,15 @@ var editCmd = &cobra.Command{
 }
 
 func editFile(filePath string) {
-	editor := os.Getenv("EDITOR")
-	if editor == "" {
-		fmt.Print("The EDITOR environment variable is not set. Choose an editor [nano/vim]: ")
+	cmd := exec.Command("editor", filePath)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		editor := ""
+		fmt.Println("Editor is not installed.")
+		fmt.Println("Choose an editor [nano/vim or press Enter]: ")
 		reader := bufio.NewReader(os.Stdin)
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
@@ -37,20 +43,21 @@ func editFile(filePath string) {
 		case "vim":
 			editor = "vim"
 		default:
-			fmt.Println("Invalid choice. Exiting.")
+			fmt.Println("You didn't choose anything, vim is the right choice!")
+			fmt.Println("Quest - it's easy to enter, exit")
+			editor = "vim"
+		}
+		cmd := exec.Command(editor, filePath)
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Run()
+		if err != nil {
+			fmt.Printf("Failed to open editor: %v\n", err)
 			return
 		}
 	}
-
-	cmd := exec.Command(editor, filePath)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		fmt.Printf("Failed to open editor: %v\n", err)
-		return
-	}
+	
 
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Do you want to apply changes? [y/n]: ")
