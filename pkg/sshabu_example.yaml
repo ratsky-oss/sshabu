@@ -17,22 +17,16 @@
 Groups:
   - Name: work                                     # Some top level group
     Options:                                       # ssh_config(5)
-      User: alivitskiy
-      IdentityFile: /.ssh/id_rsa_work
+      User: user
+      IdentityFile: ~/.ssh/id_rsa_work
     Subgroups:                                     # List of subgroups that will inherit "work" Options
      - Name: project1
        Options:
-          IdentityFile: /.ssh/id_rsa_work_p1
+          IdentityFile: ~/.ssh/id_rsa_work_p1
        Hosts:
           - Name: project1-test
             HostName: 192.168.1.2
             Port: 2222
-          - Name: project1-prod
-            HostName: 192.168.1.3
-            Port: 2223
-          - Name: project1-stage
-            HostName: 192.168.1.4
-            Port: 2224
      - Name: project2
        Hosts:
           - Name: project2-dev
@@ -42,5 +36,3 @@ Groups:
     Hosts:
       - Name: home-gitlab
         HostName: gitlab.ratsky.local
-      - Name: home-nextcloud
-        HostName: nc.ratsky.local
