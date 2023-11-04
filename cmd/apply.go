@@ -52,19 +52,32 @@ Command is going to ask you confirmation before applying`,
 	
 		destFile.TakeBites(opensshDestconfigFile)
 		tmpFile.TakeBites(opensshTmpFile)
-		compare.PrintCompareStrings(destFile, tmpFile)	
-			
-		fmt.Println("\nDo you really want to apply changes? (yes/no): ")
-		if sshabu.AskForConfirmation() {
-			err := os.WriteFile(opensshDestconfigFile, []byte(strings.Join(tmpFile.Content, "\n")), 0644)
-			os.Remove(opensshTmpFile)
-			if err != nil {
-				fmt.Println("Error overwriting the file:", err)
-				return
-			}
-			fmt.Println("Yep-Yep-Yep! Time for shabu!")
+
+		differences := compare.DiffBites(destFile, tmpFile)
+
+		if len(differences) == 0{
+			fmt.Println("----------")
+			fmt.Println("No changes! ʕっ•ᴥ•ʔっ")
+			fmt.Println("----------")
 		} else {
-			fmt.Println("Aborted")
+			resultStrings := compare.TransformDifferencesToReadableFormat(differences, destFile, tmpFile)
+
+			for _,line := range(resultStrings) {
+				fmt.Println(line)
+			}
+
+			fmt.Println("\nDo you really want to apply changes? (yes/no): ")
+			if sshabu.AskForConfirmation() {
+				err := os.WriteFile(opensshDestconfigFile, []byte(strings.Join(tmpFile.Content, "\n")), 0644)
+				os.Remove(opensshTmpFile)
+				if err != nil {
+					fmt.Println("Error overwriting the file:", err)
+					return
+				}
+				fmt.Println("Yep-Yep-Yep! Time for shabu!")
+			} else {
+				fmt.Println("Aborted")
+			}
 		}
 	},
 }

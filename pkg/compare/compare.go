@@ -54,15 +54,6 @@ func (bites *Bites) TakeBites(path string) {
     bites.length = len(lineArray)
 }
 
-func PrintCompareStrings(firstBites Bites, secondBites Bites) {
-    differences := diffBites(firstBites, secondBites)
-    resultStrings := transformDifferencesToReadableFormat(differences, firstBites, secondBites)
-
-    for _,line := range(resultStrings) {
-        fmt.Println(line)
-    }
-}
-
 // Internal functions
 func check(e error) {
     if e != nil {
@@ -70,7 +61,7 @@ func check(e error) {
     }
 }
 
-func transformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
+func TransformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
     var result []string
     for index, line := range secondBites.Content {
         color := White
@@ -83,7 +74,7 @@ func transformDifferencesToReadableFormat(differences []Difference, firstBites B
                     resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
                 } else {
                     color = Red
-                    resultStr = fmt.Sprintf("%d: %s%s\n   %s%s%s", index+1, color, diff.line ,Green, line, White)
+                    resultStr = fmt.Sprintf("%d: %s%s\n    %s%s%s", index+1, color, diff.line ,Green, line, White)
                 }
                 break
             }
@@ -104,7 +95,7 @@ func transformDifferencesToReadableFormat(differences []Difference, firstBites B
     return result
 }
 
-func diffBites(bites1, bites2 Bites) []Difference{
+func DiffBites(bites1, bites2 Bites) []Difference{
     var differences []Difference
     maxLen := 0
     for _, line := range bites1.Content {
