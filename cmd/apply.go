@@ -44,7 +44,7 @@ Command is going to ask you confirmation before applying`,
 		err = os.WriteFile(opensshTmpFile, buf.Bytes(), 0600)
 		cobra.CheckErr(err)
 		sshabu.OpensshCheck(opensshTmpFile)
-
+		
 		var (
 			destFile compare.Bites
 			tmpFile compare.Bites
@@ -52,36 +52,51 @@ Command is going to ask you confirmation before applying`,
 	
 		destFile.TakeBites(opensshDestconfigFile)
 		tmpFile.TakeBites(opensshTmpFile)
+		
+		if !forceApply {
 
-		differences := compare.DiffBites(destFile, tmpFile)
+			differences := compare.DiffBites(destFile, tmpFile)
 
-		if len(differences) == 0{
-			fmt.Println("----------")
-			fmt.Println("No changes! ʕっ•ᴥ•ʔっ")
-			fmt.Println("----------")
-		} else {
-			resultStrings := compare.TransformDifferencesToReadableFormat(differences, destFile, tmpFile)
-
-			for _,line := range(resultStrings) {
-				fmt.Println(line)
-			}
-
-			fmt.Println("\nDo you really want to apply changes? (yes/no): ")
-			if sshabu.AskForConfirmation() {
-				err := os.WriteFile(opensshDestconfigFile, []byte(strings.Join(tmpFile.Content, "\n")), 0644)
-				os.Remove(opensshTmpFile)
-				if err != nil {
-					fmt.Println("Error overwriting the file:", err)
-					return
-				}
-				fmt.Println("Yep-Yep-Yep! Time for shabu!")
+			if len(differences) == 0{
+				fmt.Println("----------")
+				fmt.Println("No changes! ʕっ•ᴥ•ʔっ")
+				fmt.Println("----------")
 			} else {
-				fmt.Println("Aborted")
+				resultStrings := compare.TransformDifferencesToReadableFormat(differences, destFile, tmpFile)
+
+				for _,line := range(resultStrings) {
+					fmt.Println(line)
+				}
+
+				fmt.Println("\nDo you really want to apply changes? (yes/no): ")
+				if sshabu.AskForConfirmation() {
+					err := os.WriteFile(opensshDestconfigFile, []byte(strings.Join(tmpFile.Content, "\n")), 0644)
+					os.Remove(opensshTmpFile)
+					if err != nil {
+						fmt.Println("Error overwriting the file:", err)
+						return
+					}
+					fmt.Println("Yep-Yep-Yep! Time for shabu!")
+				} else {
+					fmt.Println("Aborted")
+				}
 			}
+		} else {
+			err := os.WriteFile(opensshDestconfigFile, []byte(strings.Join(tmpFile.Content, "\n")), 0644)
+			os.Remove(opensshTmpFile)
+			if err != nil {
+				fmt.Println("Error overwriting the file:", err)
+				return
+			}
+			fmt.Println("Yep-Yep-Yep! Time for shabu!")
+
 		}
 	},
 }
 
+var forceApply bool
+
 func init() {
+	applyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without showing changes")
 	rootCmd.AddCommand(applyCmd)
 }
