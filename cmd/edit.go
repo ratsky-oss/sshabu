@@ -18,7 +18,10 @@ import (
 var editCmd = &cobra.Command{
 	Use:   "edit",
 	Short: "Edit sshabu config file",
-	Long: `For editing you can use vim or nano`,
+	Long: `Edit command sshabu config file with editor.
+If no editor command found, ask you to choose between vim and nano.
+
+After editing you will be promted if you'd like to use 'sshabu apply --force'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		editFile(cfgFile) 
 	},
@@ -43,8 +46,8 @@ func editFile(filePath string) {
 		case "vim":
 			editor = "vim"
 		default:
-			fmt.Println("You didn't choose anything, vim is the right choice!")
-			fmt.Println("Quest - it's easy to enter, exit")
+			fmt.Println("Vim is the right choice!")
+			// fmt.Println("Quest - it's easy to enter, exit")
 			editor = "vim"
 		}
 		cmd := exec.Command(editor, filePath)
