@@ -35,7 +35,7 @@ ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 			// Construct the ssh command with -I option
-		sshArgs := append([]string{"-F", opensshDestconfigFile}, args...)
+		sshArgs := append([]string{"-F", opensshDestconfigFile, extraOptions}, args...)
 		fmt.Println("Running SSH command:", "ssh", sshArgs)
 
 		// Execute the SSH command
@@ -50,7 +50,10 @@ ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([
 	},
 }
 
+var extraOptions string
+
 func init() {
+	connectCmd.Flags().StringVarP(&extraOptions, "options", "o", "", "Connect to the host")
 	rootCmd.AddCommand(connectCmd)
 
 	// Here you will define your flags and configuration settings.
