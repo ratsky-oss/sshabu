@@ -54,6 +54,32 @@ sshabu connect <Name>
 6. Yep-Yep-Yep! It's time for shabu!
 
 # Installation
+## Easy
+1. Download the binary file `sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
+```bash
+wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
+```
+2. Initialize your `sshabu` configuration.
+```bash
+sshabu init
+```
+## Manual
+1. Clone the git repository.
+```bash
+git clone https://git.ratsky.ru/ratsky/ssh-client/sshabu.git
+```
+2. Change the directory to the cloned project.
+```bash
+cd ./sshabu
+```
+3. Build the project.
+```bash
+go build .
+```
+4. Move the binary file `sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
+```bash
+mv sshabu /usr/bin/sshabu
+```
 
 ## Usage
 <!-- TODO -->
