@@ -31,6 +31,8 @@
 - Openssh
 
 # Quick start
+<img src="docs/sshabu-quick.gif" alt="alt text">
+
 1. Download the binary file `sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
 ```bash
 wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
