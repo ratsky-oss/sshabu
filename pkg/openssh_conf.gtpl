@@ -131,8 +131,8 @@ Host {{ .Name }}
 {{end}}
 {{- if .MACs }}MACs {{ .MACs }}
 {{ end }}
-{{- if .Match }}Match {{ .Match }}
-{{ end }}
+{{/* {{- if .Match }}Match {{ .Match }} 
+{{ end }} */}} 
 {{- if .NoHostAuthenticationForLocalhost }}NoHostAuthenticationForLocalhost {{ .NoHostAuthenticationForLocalhost }}
 {{ end }}
 {{- if .NumberOfPasswordPrompts }}NumberOfPasswordPrompts {{ .NumberOfPasswordPrompts }}

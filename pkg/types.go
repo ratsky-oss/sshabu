@@ -166,7 +166,7 @@ type Options struct {
     LocalForward                         Option        `mapstructure:"localforward,omitempty"`
     LogLevel                             Option        `mapstructure:"loglevel,omitempty"`
     MACs                                 Option        `mapstructure:"macs,omitempty"`
-    Match                                Option        `mapstructure:"match,omitempty"`
+    // Match                                Option        `mapstructure:"match,omitempty"`
     NoHostAuthenticationForLocalhost     Option          `mapstructure:"nohostauthenticationforlocalhost,omitempty"`
     NumberOfPasswordPrompts              Option           `mapstructure:"numberofpasswordprompts,omitempty"`
     PasswordAuthentication               Option          `mapstructure:"passwordauthentication,omitempty"`
