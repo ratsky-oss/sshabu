@@ -69,9 +69,6 @@ func initConfig() {
 
 	if err := viper.ReadInConfig(); err == nil {
 		cfgFile = viper.ConfigFileUsed()
-		fmt.Println("卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌")
-		fmt.Println("⸫ Using config file:", cfgFile)
-		fmt.Println("卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌")
 		cfgPath := filepath.Dir(cfgFile)
 		opensshTmpFile = cfgPath+"/openssh.tmp"
 		opensshDestconfigFile = cfgPath+"/openssh.config"

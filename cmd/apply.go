@@ -23,6 +23,9 @@ var applyCmd = &cobra.Command{
 Command is going to ask you confirmation before overriding destination openssh.config.
 openssh.config file is located right next to the used sshabu.yaml`,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌")
+		fmt.Println("⸫ Using config file:", cfgFile)
+		fmt.Println("卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌")
 		
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
