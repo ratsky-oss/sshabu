@@ -30,7 +30,6 @@ type Bites struct {
 	Content      []string
 }
 
-// External functions
 func (bites *Bites) TakeBites(path string) {
     var lineArray []string
 
