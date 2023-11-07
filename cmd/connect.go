@@ -16,7 +16,15 @@ import (
 var connectCmd = &cobra.Command{
 	Use:   "connect",
 	Short: "Just a wrapper around ssh command",
-	Long: `Generally just a wrapper around ssh command with autocompletion from sshabu config`,
+	Long: `Generally just a wrapper around ssh command with autocompletion from sshabu config.
+	
+Optionally you could pass openssh parametrs or override user
+
+~ sshabu connect -o "-p 2222 -i /path/to/dir" user@host_example
+
+# Command above wll be transformed to the following
+# ssh -F /Users/alivitskiy/Documents/Code/sshabu/openssh.config -p 2222 -i /path/to/dir user@host_example
+`,
 ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	if len(args) != 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
