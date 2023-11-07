@@ -88,7 +88,7 @@ Command is going to ask you confirmation before applying`,
 				fmt.Println("Error overwriting the file:", err)
 				return
 			}
-			fmt.Println("Yep-Yep-Yep! Time for shabu! ʕ •́؈•̀)")
+			fmt.Println("Yep-Yep-Yep! It's time for shabu! ʕ •́؈•̀)")
 
 		}
 	},
