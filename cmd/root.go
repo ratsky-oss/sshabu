@@ -49,9 +49,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sshabu.yaml)")
-
-	opensshDestconfigFile = "/Users/alivitskiy/Documents/Code/sshabu/.config.tmp"
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sshabu/sshabu.yaml)")
 }
 
 // initConfig reads in config file and ENV variables if set.

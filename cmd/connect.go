@@ -59,7 +59,7 @@ ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([
 var extraOptions string
 
 func init() {
-	connectCmd.Flags().StringVarP(&extraOptions, "options", "o", "", "Connect to the host")
+	connectCmd.Flags().StringVarP(&extraOptions, "options", "o", "", "openssh options passed to ssh command")
 	rootCmd.AddCommand(connectCmd)
 
 	// Here you will define your flags and configuration settings.

@@ -58,9 +58,9 @@ Command is going to ask you confirmation before applying`,
 			differences := compare.DiffBites(destFile, tmpFile)
 
 			if len(differences) == 0{
-				fmt.Println("----------")
+				fmt.Println("---------------------")
 				fmt.Println("No changes! ʕっ•ᴥ•ʔっ")
-				fmt.Println("----------")
+				fmt.Println("---------------------")
 			} else {
 				resultStrings := compare.TransformDifferencesToReadableFormat(differences, destFile, tmpFile)
 
@@ -97,6 +97,6 @@ Command is going to ask you confirmation before applying`,
 var forceApply bool
 
 func init() {
-	applyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without showing changes")
+	applyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without confirmation")
 	rootCmd.AddCommand(applyCmd)
 }
