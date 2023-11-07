@@ -33,9 +33,9 @@ func editFile(filePath string) {
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println("卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌")
+
 		fmt.Println("⸫ Using config file:", cfgFile)
-		fmt.Println("卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌卌")
+
 		editor := ""
 		fmt.Println("Editor is not installed.")
 		fmt.Println("Choose an editor [nano/vim or press Enter]: ")
