@@ -4,7 +4,6 @@ Copyright © 2023 alvtsky github.com/Ra-sky
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 
