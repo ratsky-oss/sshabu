@@ -158,6 +158,7 @@ https://linux.die.net/man/5/ssh_config \
 ```
 HostName: <str>
 IdentityFile: <str>
+StrictHostKeyChecking: <yes/accept-new/no/off/ask>
 ...
 ```
 > Suggestion - "Host" better be unique if used \
@@ -166,6 +167,105 @@ IdentityFile: <str>
 > Using "Host" inside:
 > - "GlabalOptions" is useless
 > - "\<Host>" will override \<Host>."Name" section in destination openssh config
+
+<details>
+<summary>All options reference</summary>
+
+|Openssh option  | Sshabu | Tested |
+|---|:---:|:---:|
+| AddKeysToAgent  | ✅ | ❌ |
+| AddressFamily | ✅ | ❌ |
+| BatchMode | ✅ | ❌ |
+| BindAddress | ✅ | ❌ |
+| CanonicalDomains  | ✅ | ❌ |
+| CanonicalizeFallbackLocal | ✅ | ❌ |
+| CanonicalizeHostname  | ✅ | ❌ |
+| CanonicalizeMaxDots | ✅ | ❌ |
+| CanonicalizePermittedCNAMEs | ✅ | ❌ |
+| CASignatureAlgorithms | ✅ | ❌ |
+| CertificateFile | ✅ | ❌ |
+| CheckHostIP | ✅ | ❌ |
+| Ciphers | ✅ | ❌ |
+| ClearAllForwardings | ✅ | ❌ |
+| Compression | ✅ | ❌ |
+| ConnectionAttempts  | ✅ | ❌ |
+| ConnectTimeout  | ✅ | ❌ |
+| ControlMaster | ✅ | ❌ |
+| ControlPath | ✅ | ❌ |
+| ControlPersist  | ✅ | ❌ |
+| DynamicForward  | ✅ | ❌ |
+| EnableEscapeCommandline | ❌ | ❌ |
+| EscapeChar  | ✅ | ❌ |
+| ExitOnForwardFailure  | ✅ | ❌ |
+| FingerprintHash | ✅ | ❌ |
+| ForkAfterAuthentication | ✅ | ❌ |
+| ForwardAgent  | ✅ | ❌ |
+| ForwardX11  | ✅ | ❌ |
+| ForwardX11Timeout | ✅ | ❌ |
+| ForwardX11Trusted | ✅ | ❌ |
+| GatewayPorts  | ✅ | ❌ |
+| GlobalKnownHostsFile  | ✅ | ❌ |
+| GSSAPIAuthentication  | ✅ | ❌ |
+| GSSAPIDelegateCredentials | ✅ | ❌ |
+| HashKnownHosts  | ✅ | ❌ |
+| Host  | ✅ | ✅ |
+| HostbasedAcceptedAlgorithms | ✅ | ❌ |
+| HostbasedAuthentication | ✅ | ❌ |
+| HostKeyAlgorithms | ✅ | ❌ |
+| HostKeyAlias  | ✅ | ❌ |
+| Hostname  | ✅ | ✅ |
+| IdentitiesOnly  | ✅ | ❌ |
+| IdentityAgent | ✅ | ❌ |
+| IdentityFile  | ✅ | ✅ |
+| IPQoS | ✅ | ❌ |
+| KbdInteractiveAuthentication  | ❌ | ❌ |
+| KbdInteractiveDevices | ✅ | ❌ |
+| KexAlgorithms | ✅ | ❌ |
+| KnownHostsCommand | ✅ | ❌ |
+| LocalCommand  | ✅ | ❌ |
+| LocalForward  | ✅ | ❌ |
+| LogLevel  | ✅ | ❌ |
+| MACs  | ✅ | ❌ |
+| Match | ❌ | ❌ |
+| NoHostAuthenticationForLocalhost  | ✅ | ❌ |
+| NumberOfPasswordPrompts | ✅ | ❌ |
+| PasswordAuthentication  | ✅ | ❌ |
+| PermitLocalCommand  | ✅ | ❌ |
+| PermitRemoteOpen  | ✅ | ❌ |
+| PKCS11Provider  | ✅ | ❌ |
+| Port  | ✅ | ✅ |
+| PreferredAuthentications  | ✅ | ❌ |
+| ProxyCommand  | ✅ | ❌ |
+| ProxyJump | ✅ | ❌ |
+| ProxyUseFdpass  | ✅ | ❌ |
+| PubkeyAcceptedAlgorithms  | ✅ | ❌ |
+| PubkeyAuthentication  | ✅ | ❌ |
+| RekeyLimit  | ✅ | ❌ |
+| RemoteCommand | ✅ | ❌ |
+| RemoteForward | ✅ | ❌ |
+| RequestTTY  | ✅ | ❌ |
+| RequiredRSASize | ❌ | ❌ |
+| SendEnv | ✅ | ❌ |
+| ServerAliveInterval | ✅ | ❌ |
+| ServerAliveCountMax | ✅ | ❌ |
+| SessionType | ✅ | ❌ |
+| SetEnv  | ✅ | ❌ |
+| StdinNull | ✅ | ❌ |
+| StreamLocalBindMask | ✅ | ❌ |
+| StreamLocalBindUnlink | ✅ | ❌ |
+| StrictHostKeyChecking | ✅ | ✅ |
+| TCPKeepAlive  | ✅ | ❌ |
+| Tunnel  | ✅ | ❌ |
+| TunnelDevice  | ✅ | ❌ |
+| UpdateHostKeys  | ✅ | ❌ |
+| UseKeychain | ✅ | ❌ |
+| User  | ✅ | ✅ |
+| UserKnownHostsFile  | ✅ | ❌ |
+| VerifyHostKeyDNS  | ✅ | ❌ |
+| VisualHostKey | ✅ | ❌ |
+| XAuthLocation | ✅ | ❌ |
+
+</details>
 
 ### Configuration example
 
