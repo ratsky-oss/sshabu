@@ -18,9 +18,10 @@ import (
 // applyCmd represents the apply command
 var applyCmd = &cobra.Command{
 	Use:   "apply",
-	Short: "Transform .sshabu.yaml to openssh_config",
-	Long: `sshabu apply - generate openssh_config according to yaml specification.
-Command is going to ask you confirmation before applying`,
+	Short: "Transform sshabu.yaml to openssh.config",
+	Long: `Apply generate openssh_config according to yaml specification.
+Command is going to ask you confirmation before overriding destination openssh.config.
+openssh.config file is located right next to the used sshabu.yaml`,
 	Run: func(cmd *cobra.Command, args []string) {
 		
 		var shabu sshabu.Shabu
