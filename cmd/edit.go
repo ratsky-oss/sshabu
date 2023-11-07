@@ -14,7 +14,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// editCmd represents the edit command
 var editCmd = &cobra.Command{
 	Use:   "edit",
 	Short: "Edit sshabu config file",
@@ -47,7 +46,6 @@ func editFile(filePath string) {
 			editor = "vim"
 		default:
 			fmt.Println("Vim is the right choice!")
-			// fmt.Println("Quest - it's easy to enter, exit")
 			editor = "vim"
 		}
 		cmd := exec.Command(editor, filePath)
@@ -76,8 +74,6 @@ func editFile(filePath string) {
 			fmt.Printf("Failed to run apply: %v\n", err)
 			return
 		}
-		// applyCmd.Run(applyCmd, []string{})
-		// applyCmd.Execute()
 	} else {
 		fmt.Println("Changes not applied.")
 	}
