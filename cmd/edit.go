@@ -21,7 +21,7 @@ var editCmd = &cobra.Command{
 	Long: `Edit command sshabu config file with editor.
 If no editor command found, ask you to choose between vim and nano.
 
-After editing you will be promted if you'd like to use 'sshabu apply --force'`,
+After editing you will be promted if you'd like to use 'sshabu apply'`,
 	Run: func(cmd *cobra.Command, args []string) {
 		editFile(cfgFile) 
 	},
@@ -63,7 +63,7 @@ func editFile(filePath string) {
 	
 
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Do you want to apply changes? [y/n]: ")
+	fmt.Print("Would you like sshabu to apply changes? [y/n]: ")
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
 	if strings.ToLower(text) == "y" {
@@ -79,7 +79,8 @@ func editFile(filePath string) {
 		// applyCmd.Run(applyCmd, []string{})
 		// applyCmd.Execute()
 	} else {
-		fmt.Println("Changes not applied.")
+		fmt.Println("Ok.(╥﹏╥)")
+		fmt.Println("Changes was not applied.")
 	}
 }
 
