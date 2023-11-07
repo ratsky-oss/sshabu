@@ -23,7 +23,7 @@ ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([
 		}
 
 		file, _ := os.Open(opensshDestconfigFile)
-
+ 
 		defer file.Close()
 
 		hostValues, err := sshabu.DestinationHosts(file)
@@ -35,7 +35,13 @@ ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 			// Construct the ssh command with -I option
-		sshArgs := append([]string{"-F", opensshDestconfigFile, extraOptions}, args...)
+		var sshArgs []string
+		if len(extraOptions) > 0 {
+			sshArgs = append([]string{"-F", opensshDestconfigFile, extraOptions}, args...)
+		} else {
+			sshArgs = append([]string{"-F", opensshDestconfigFile}, args...)
+		}
+		
 		fmt.Println("Running SSH command:", "ssh", sshArgs)
 
 		// Execute the SSH command
