@@ -31,8 +31,27 @@
 - Openssh
 
 # Quick start
-
-<!-- TODO -->
+1. Download the binary file `sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
+```bash
+wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
+```
+2. Initialize your sshabu configuration.
+```bash
+sshabu init
+```
+3. Enable auto-completion. Several options are available; use the following command to view them:
+```bash
+sshabu completion --help
+```
+4. Begin editing the config with this convenient command:
+```bash
+sshabu edit
+```
+5. Connect to servers by specifying the name.
+```bash
+sshabu connect <Name>
+```
+6. Yep-Yep-Yep! It's time for shabu!
 
 # Installation
 
@@ -43,7 +62,7 @@
 
 All unmentioned opions will be inherited from parent(s) groups 'till top group in <Group> derictive
 
-> Config path 
+> ~/.sshabu/sshabu.yaml
 
 Config structure
 
