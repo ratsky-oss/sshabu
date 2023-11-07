@@ -16,13 +16,8 @@ const (
 	Cyan   = "\033[36m"
 	Gray   = "\033[37m"
 	White  = "\033[97m"
-	Added ChangeType = iota
-    Deleted
-    Modified
-    Moved
-)
 
-type ChangeType int
+)
 
 type Difference struct {
     lineNumber int
@@ -35,7 +30,6 @@ type Bites struct {
 	Content      []string
 }
 
-// External functions
 func (bites *Bites) TakeBites(path string) {
     var lineArray []string
 
@@ -52,13 +46,6 @@ func (bites *Bites) TakeBites(path string) {
 
     bites.Content = lineArray
     bites.length = len(lineArray)
-}
-
-// Internal functions
-func check(e error) {
-    if e != nil {
-        panic(e)
-    }
 }
 
 func TransformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
@@ -109,7 +96,6 @@ func DiffBites(bites1, bites2 Bites) []Difference{
         lcsMatrix[i] = make([]int, len(bites2.Content)+1)
     }
 
-    // Построение матрицы LCS
     for i := 1; i <= len(bites1.Content); i++ {
         for j := 1; j <= len(bites2.Content); j++ {
             if bites1.Content[i-1] == bites2.Content[j-1] {
@@ -135,6 +121,12 @@ func DiffBites(bites1, bites2 Bites) []Difference{
     }
 
     return differences
+}
+
+func check(e error) {
+    if e != nil {
+        panic(e)
+    }
 }
 
 func max(a, b int) int {
