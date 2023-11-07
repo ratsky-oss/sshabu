@@ -84,6 +84,7 @@ mv sshabu /usr/bin/sshabu
 ```bash
 sshabu init
 ```
+
 ## Usage
 <!-- TODO -->
 
