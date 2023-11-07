@@ -80,7 +80,10 @@ go build .
 ```bash
 mv sshabu /usr/bin/sshabu
 ```
-
+5. Initialize your `sshabu` configuration.
+```bash
+sshabu init
+```
 ## Usage
 <!-- TODO -->
 
