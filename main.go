@@ -5,12 +5,15 @@ package main
 
 import (
 	"sshabu/cmd"
-	"time"
+)
 
-	"github.com/carlmjohnson/versioninfo"
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
 )
 
 func main() {
-	cmd.SetVersionInfo(versioninfo.Version, versioninfo.Revision, versioninfo.LastCommit.Format(time.RFC3339))
+	cmd.SetVersionInfo(version, commit, date)
 	cmd.Execute()
 }
