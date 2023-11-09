@@ -4,6 +4,7 @@ Copyright © 2023 alvtsky github.com/Ra-sky
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -19,6 +20,7 @@ var opensshDestconfigFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "sshabu",
+	Version: "0.0.1-alpha",
 	Short: "Not a ssh client, more like friendly openssh",
 	Long: `Not a ssh client, more like friendly openssh client. 
 Openssh wrapper for people, who like working in terminal.
@@ -74,4 +76,9 @@ func initConfig() {
 		os.OpenFile(opensshTmpFile, os.O_RDONLY|os.O_CREATE, 0666)
 		os.OpenFile(opensshDestconfigFile, os.O_RDONLY|os.O_CREATE, 0666)
 	}
+}
+
+
+func SetVersionInfo(version, commit, date string) {
+	rootCmd.Version = fmt.Sprintf("%s \nBuilt on %s from Git SHA %s)", version, date, commit)
 }
