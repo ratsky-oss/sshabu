@@ -2,3 +2,4 @@ openssh.tmp
 sshabu.yaml
 *.drowio
 *.bkp
+dist/
