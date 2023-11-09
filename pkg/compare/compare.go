@@ -50,18 +50,26 @@ func (bites *Bites) TakeBites(path string) {
 
 func TransformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
     var result []string
+
+     // Определение максимальной длины номера строки для выравнивания
+     maxLineNum := max(firstBites.length, len(secondBites.Content))
+     maxLineNumLen := len(fmt.Sprintf("%d", maxLineNum))
+ 
+     // Форматирование строки с учетом выравнивания номера строки
+    //  lineFormat := fmt.Sprintf("%%%dd: %%s%%s%%s", maxLineNumLen)
+
     for index, line := range secondBites.Content {
-        color := White
+        color := Reset
         resultStr := ""
-        resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
+        resultStr = fmt.Sprintf("%*d: %s%s%s", maxLineNumLen, index+1, color, line, Reset)
         for _, diff := range differences {
             if diff.lineNumber == index+1 {
                 if diff.Added {
                     color = Green
-                    resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
+                    resultStr = fmt.Sprintf("%*d:  %s+%s%s", maxLineNumLen, index+1, color, line, Reset)
                 } else {
                     color = Red
-                    resultStr = fmt.Sprintf("%d: %s%s\n    %s%s%s", index+1, color, diff.line ,Green, line, White)
+                    resultStr = fmt.Sprintf("%*d:  %s-%s\n      %s+%s%s", maxLineNumLen, index+1, color, diff.line ,Green, line, Reset)
                 }
                 break
             }
@@ -73,7 +81,7 @@ func TransformDifferencesToReadableFormat(differences []Difference, firstBites B
         for _, diff := range differences {
             if diff.lineNumber > len(result){
                 color := Red
-                resultStr := fmt.Sprintf("%d: %s%s%s", diff.lineNumber, color, diff.line, White)
+                resultStr := fmt.Sprintf("%*d: %s-%s%s", maxLineNumLen, diff.lineNumber, color, diff.line, Reset)
                 result = append(result, resultStr)
             }
         }
