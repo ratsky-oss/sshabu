@@ -1,11 +1,11 @@
-# Ratskt Sshabu
+# Ratsky Sshabu
 
 <!-- ![alt text](docs/logo_gradient_square.svg "containers"){:height="100px" width="100px"} -->
 <!-- <img src="docs/logo_gradient_square.svg" alt="alt text" width="300" height="300"> -->
 
 
 
-# Table of contents
+<!-- # Table of contents
 
 - [Overview](#overview)
 - [Requirements](#requirements)
@@ -17,26 +17,21 @@
     - [Service management](#service-management)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
-- [Contacts](#contact)
+- [Contacts](#contact) -->
 
 # Overview
 
 <!-- TODO -->
-
-# Requirements
-
-<!-- TODO -->
-<!-- TODO: Not supported directivies -->
-
-- Openssh
-
-# Quick start
 <img src="docs/sshabu-quick.gif" alt="alt text">
 
-1. Download the binary file `sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
-```bash
+> Openssh should be installed on your system.
+
+# Quick start
+
+1. Download the binary file `sshabu` to `/usr/bin/sshabu`.
+<!-- ```bash
 wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
-```
+``` -->
 2. Initialize your sshabu configuration.
 ```bash
 sshabu init
@@ -57,19 +52,19 @@ sshabu connect <Name>
 
 # Installation
 ## Easy
-1. Download the binary file `sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
-```bash
+1. Download the binary file `sshabu` to `/usr/bin/sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
+<!-- ```bash
 wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
-```
+``` -->
 2. Initialize your `sshabu` configuration.
 ```bash
 sshabu init
 ```
-## Manual
+## Build from source
 1. Clone the git repository.
-```bash
+<!-- ```bash
 git clone https://git.ratsky.ru/ratsky/ssh-client/sshabu.git
-```
+``` -->
 2. Change the directory to the cloned project.
 ```bash
 cd ./sshabu
@@ -89,6 +84,17 @@ sshabu init
 
 ## Usage
 <!-- TODO -->
+
+#### `sshabu init`
+Create `~/$HOME/.sshabu/` directory and generate example `sshabu.yaml` config
+#### `sshabu apply`
+Generate `openssh.config` based on `sshabu.yaml`
+#### `sshabu edit`
+Open `sshabu.yaml` with editor and runs `sshabu apply after that`
+#### `sshabu connect`
+Runs openssh command with `openssh.config`
+
+> Find out more info by using `--help` flag
 
 ## Configuration
 
@@ -267,7 +273,8 @@ StrictHostKeyChecking: <yes/accept-new/no/off/ask>
 
 </details>
 
-### Configuration example
+<details>
+<summary>All options reference</summary>
 
 ```
 # ----------------------------------------------------------------------
@@ -356,6 +363,9 @@ Host home-nextcloud
     Hostname nc.ratsky.local
 
 ```
+
+</details>
+
 # License
 
 

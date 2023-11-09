@@ -128,7 +128,7 @@ Host {{ .Name }}
 {{- if .LocalForward }}LocalForward {{ .LocalForward }}
 {{ end }}
 {{- if .LogLevel -}}LogLevel {{ .LogLevel }}
-{{end}}
+{{ end }}
 {{- if .MACs }}MACs {{ .MACs }}
 {{ end }}
 {{- if .NoHostAuthenticationForLocalhost }}NoHostAuthenticationForLocalhost {{ .NoHostAuthenticationForLocalhost }}
