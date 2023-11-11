@@ -1,6 +1,17 @@
-/*
-Copyright © 2023 alvtsky github.com/Ra-sky
-*/
+// Copyright (C) 2023  Shovra Nikita, Livitsky Andrey
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package cmd
 
 import (
@@ -20,13 +31,18 @@ var opensshDestconfigFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "sshabu",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Version: "0.0.1-alpha",
+	Short: "Not a ssh client, more like friendly openssh",
+	Long: `Not a ssh client, more like friendly openssh client. 
+Openssh wrapper for people, who like working in terminal.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+Sshabu works with sshabu.yaml and openssh.config file.
+openssh.config will be created next to sshabu.yaml
+
+sshabu.yaml locations:
+- $PWD  (current dir)
+- $HOME (user home dir)
+`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -49,9 +65,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sshabu.yaml)")
-
-	opensshDestconfigFile = "/Users/alivitskiy/Documents/Code/sshabu/.config.tmp"
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "manully override config file path")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -67,11 +81,15 @@ func initConfig() {
 
 	if err := viper.ReadInConfig(); err == nil {
 		cfgFile = viper.ConfigFileUsed()
-		fmt.Fprintln(os.Stderr, "Using config file:", cfgFile)
 		cfgPath := filepath.Dir(cfgFile)
 		opensshTmpFile = cfgPath+"/openssh.tmp"
 		opensshDestconfigFile = cfgPath+"/openssh.config"
 		os.OpenFile(opensshTmpFile, os.O_RDONLY|os.O_CREATE, 0666)
 		os.OpenFile(opensshDestconfigFile, os.O_RDONLY|os.O_CREATE, 0666)
 	}
+}
+
+
+func SetVersionInfo(version, commit, date string) {
+	rootCmd.Version = fmt.Sprintf("%s \nBuilt on %s from Git SHA %s)", version, date, commit)
 }

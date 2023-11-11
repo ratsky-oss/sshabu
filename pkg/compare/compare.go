@@ -1,3 +1,16 @@
+// Copyright (C) 2023  Shovra Nikita, Livitsky Andrey
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package compare
 
 import (
@@ -16,13 +29,8 @@ const (
 	Cyan   = "\033[36m"
 	Gray   = "\033[37m"
 	White  = "\033[97m"
-	Added ChangeType = iota
-    Deleted
-    Modified
-    Moved
-)
 
-type ChangeType int
+)
 
 type Difference struct {
     lineNumber int
@@ -35,7 +43,6 @@ type Bites struct {
 	Content      []string
 }
 
-// External functions
 func (bites *Bites) TakeBites(path string) {
     var lineArray []string
 
@@ -54,36 +61,28 @@ func (bites *Bites) TakeBites(path string) {
     bites.length = len(lineArray)
 }
 
-func PrintCompareStrings(firstBites Bites, secondBites Bites) {
-    differences := diffBites(firstBites, secondBites)
-    resultStrings := transformDifferencesToReadableFormat(differences, firstBites, secondBites)
-
-    for _,line := range(resultStrings) {
-        fmt.Println(line)
-    }
-}
-
-// Internal functions
-func check(e error) {
-    if e != nil {
-        panic(e)
-    }
-}
-
-func transformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
+func TransformDifferencesToReadableFormat(differences []Difference, firstBites Bites, secondBites Bites) []string {
     var result []string
+
+     // Определение максимальной длины номера строки для выравнивания
+     maxLineNum := max(firstBites.length, len(secondBites.Content))
+     maxLineNumLen := len(fmt.Sprintf("%d", maxLineNum))
+ 
+     // Форматирование строки с учетом выравнивания номера строки
+    //  lineFormat := fmt.Sprintf("%%%dd: %%s%%s%%s", maxLineNumLen)
+
     for index, line := range secondBites.Content {
-        color := White
+        color := Reset
         resultStr := ""
-        resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
+        resultStr = fmt.Sprintf("%*d:   %s%s%s", maxLineNumLen, index+1, color, line, Reset)
         for _, diff := range differences {
             if diff.lineNumber == index+1 {
                 if diff.Added {
                     color = Green
-                    resultStr = fmt.Sprintf("%d: %s%s%s", index+1, color, line, White)
+                    resultStr = fmt.Sprintf("%*d:%s + %s%s", maxLineNumLen, index+1, color, line, Reset)
                 } else {
                     color = Red
-                    resultStr = fmt.Sprintf("%d: %s%s\n   %s%s%s", index+1, color, diff.line ,Green, line, White)
+                    resultStr = fmt.Sprintf("%*d:%s - %s\n  %*s%s+ %s%s", maxLineNumLen, index+1, color, diff.line ,maxLineNumLen,"",Green, line, Reset)
                 }
                 break
             }
@@ -95,7 +94,7 @@ func transformDifferencesToReadableFormat(differences []Difference, firstBites B
         for _, diff := range differences {
             if diff.lineNumber > len(result){
                 color := Red
-                resultStr := fmt.Sprintf("%d: %s%s%s", diff.lineNumber, color, diff.line, White)
+                resultStr := fmt.Sprintf("%*d:%s - %s%s", maxLineNumLen, diff.lineNumber, color, diff.line, Reset)
                 result = append(result, resultStr)
             }
         }
@@ -104,7 +103,7 @@ func transformDifferencesToReadableFormat(differences []Difference, firstBites B
     return result
 }
 
-func diffBites(bites1, bites2 Bites) []Difference{
+func DiffBites(bites1, bites2 Bites) []Difference{
     var differences []Difference
     maxLen := 0
     for _, line := range bites1.Content {
@@ -118,7 +117,6 @@ func diffBites(bites1, bites2 Bites) []Difference{
         lcsMatrix[i] = make([]int, len(bites2.Content)+1)
     }
 
-    // Построение матрицы LCS
     for i := 1; i <= len(bites1.Content); i++ {
         for j := 1; j <= len(bites2.Content); j++ {
             if bites1.Content[i-1] == bites2.Content[j-1] {
@@ -144,6 +142,12 @@ func diffBites(bites1, bites2 Bites) []Difference{
     }
 
     return differences
+}
+
+func check(e error) {
+    if e != nil {
+        panic(e)
+    }
 }
 
 func max(a, b int) int {

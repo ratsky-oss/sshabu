@@ -1,6 +1,16 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
+// Copyright (C) 2023  Shovra Nikita, Livitsky Andrey
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package cmd
 
 import (
@@ -18,10 +28,13 @@ import (
 // applyCmd represents the apply command
 var applyCmd = &cobra.Command{
 	Use:   "apply",
-	Short: "Transform .sshabu.yaml to openssh_config",
-	Long: `sshabu apply - generate openssh_config according to yaml specification.
-Command is going to ask you confirmation before applying`,
+	Short: "Transform sshabu.yaml to openssh.config",
+	Long: `Apply generate openssh_config according to yaml specification.
+Command is going to ask you confirmation before overriding destination openssh.config.
+openssh.config file is located right next to the used sshabu.yaml`,
 	Run: func(cmd *cobra.Command, args []string) {
+		
+		fmt.Println("⸫ Using config file:", cfgFile)
 		
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
@@ -44,7 +57,7 @@ Command is going to ask you confirmation before applying`,
 		err = os.WriteFile(opensshTmpFile, buf.Bytes(), 0600)
 		cobra.CheckErr(err)
 		sshabu.OpensshCheck(opensshTmpFile)
-
+		
 		var (
 			destFile compare.Bites
 			tmpFile compare.Bites
@@ -52,23 +65,46 @@ Command is going to ask you confirmation before applying`,
 	
 		destFile.TakeBites(opensshDestconfigFile)
 		tmpFile.TakeBites(opensshTmpFile)
-		compare.PrintCompareStrings(destFile, tmpFile)	
+
+		differences := compare.DiffBites(destFile, tmpFile)
+
+		if len(differences) == 0{
+			fmt.Println("---------------------")
+			fmt.Println("No changes! ʕっ•ᴥ•ʔっ")
+			fmt.Println("---------------------")
+			return
+		} 
+		
+		
+		
+		if !forceApply {
 			
-		fmt.Println("\nDo you really want to apply changes? (yes/no): ")
-		if sshabu.AskForConfirmation() {
-			err := os.WriteFile(opensshDestconfigFile, []byte(strings.Join(tmpFile.Content, "\n")), 0644)
-			os.Remove(opensshTmpFile)
-			if err != nil {
-				fmt.Println("Error overwriting the file:", err)
+			resultStrings := compare.TransformDifferencesToReadableFormat(differences, destFile, tmpFile)
+			
+			for _,line := range(resultStrings) {
+				fmt.Println(line)
+			}
+
+			fmt.Println("\nDo you really want to apply changes? (yes/no): ")
+			if !sshabu.AskForConfirmation() {
+				fmt.Println("Aborted")
 				return
 			}
-			fmt.Println("Yep-Yep-Yep! Time for shabu!")
-		} else {
-			fmt.Println("Aborted")
 		}
+		
+		err = os.WriteFile(opensshDestconfigFile, []byte(strings.Join(tmpFile.Content, "\n")), 0644)
+		os.Remove(opensshTmpFile)
+		if err != nil {
+			fmt.Println("Error overwriting the file:", err)
+			return
+		}
+		fmt.Println("Yep-Yep-Yep! It's time for shabu! ʕ •́؈•̀)")
 	},
 }
 
+var forceApply bool
+
 func init() {
+	applyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without confirmation")
 	rootCmd.AddCommand(applyCmd)
 }

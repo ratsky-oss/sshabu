@@ -1,49 +1,98 @@
-# Ratskt Sshabu
-
-<!-- ![alt text](docs/logo_gradient_square.svg "containers"){:height="100px" width="100px"} -->
-<!-- <img src="docs/logo_gradient_square.svg" alt="alt text" width="300" height="300"> -->
-
+# Ratsky Sshabu
 
 
 # Table of contents
 
 - [Overview](#overview)
-- [Requirements](#requirements)
 - [Quick start](#quick-start)
 - [Installation](#installation)
+- [Commands](#commands)
 - [Configuration](#configuration)
-    - [Settings reference](#settings-reference) 
-    - [Crucial settings](#crucial-settings)
-    - [Service management](#service-management)
-- [Troubleshooting](#troubleshooting)
 - [License](#license)
 - [Contacts](#contact)
 
 # Overview
 
-<!-- TODO -->
+`Ratsky Sshabu` is a robust SSH client management tool designed to streamline the process of connecting to multiple servers effortlessly. This tool leverages OpenSSH and offers a user-friendly interface to enhance the overall SSH experience. With Sshabu, managing SSH configurations becomes more intuitive, allowing users to organize and connect to their servers efficiently.
 
-# Requirements
+<img src="docs/sshabu-quick.gif" alt="alt text">
 
-<!-- TODO -->
-<!-- TODO: Not supported directivies -->
-
-- Openssh
+> Openssh should be installed on your system.
 
 # Quick start
 
-<!-- TODO -->
+1. Download the binary file `sshabu` to `/usr/bin/sshabu`.
+<!-- ```bash
+wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
+``` -->
+2. Initialize your sshabu configuration.
+```bash
+sshabu init
+```
+3. Enable auto-completion. Several options are available; use the following command to view them:
+```bash
+sshabu completion --help
+```
+4. Begin editing the config with this convenient command:
+```bash
+sshabu edit
+```
+5. Connect to servers by specifying the name.
+```bash
+sshabu connect <Name>
+```
+6. Yep-Yep-Yep! It's time for shabu!
 
 # Installation
+## Easy
+1. Download the binary file `sshabu` to `/usr/bin/sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
+<!-- ```bash
+wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
+``` -->
+2. Initialize your `sshabu` configuration.
+```bash
+sshabu init
+```
+## Build from source
+1. Clone the git repository.
+<!-- ```bash
+git clone https://git.ratsky.ru/ratsky/ssh-client/sshabu.git
+``` -->
+2. Change the directory to the cloned project.
+```bash
+cd ./sshabu
+```
+3. Build the project.
+```bash
+go build .
+```
+4. Move the binary file `sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
+```bash
+mv sshabu /usr/bin/sshabu
+```
+5. Initialize your `sshabu` configuration.
+```bash
+sshabu init
+```
 
-## Usage
-<!-- TODO -->
+## Commands
+
+#### `sshabu init`
+Create `~/$HOME/.sshabu/` directory and generate example `sshabu.yaml` config
+#### `sshabu apply`
+Generate `openssh.config` based on `sshabu.yaml`
+#### `sshabu edit`
+Open `sshabu.yaml` with editor and runs `sshabu apply after that`
+#### `sshabu connect`
+Runs openssh command with `openssh.config`
+
+> Find out more info by using `--help` flag
 
 ## Configuration
 
-All unmentioned opions will be inherited from parent(s) groups 'till top group in <Group> derictive
+All unmentioned options will be inherited from parent(s) groups 'till top group in <Group> derictive
 
-> Config path 
+> ~/.sshabu/sshabu.yaml
 
 Config structure
 
@@ -102,11 +151,12 @@ Generally just openssh config options in "key: value" format\
 man page - ssh_config(5)
 https://linux.die.net/man/5/ssh_config \
 
- <!-- // TODO: Host is generally the same as Name -->
+> Avoid using 'Host' option unless you know what you are doing.  
 
 ```
 HostName: <str>
 IdentityFile: <str>
+StrictHostKeyChecking: <yes/accept-new/no/off/ask>
 ...
 ```
 > Suggestion - "Host" better be unique if used \
@@ -116,7 +166,107 @@ IdentityFile: <str>
 > - "GlabalOptions" is useless
 > - "\<Host>" will override \<Host>."Name" section in destination openssh config
 
-### Configuration example
+<details>
+<summary>All options reference</summary>
+
+|Openssh option  | Sshabu | Tested |
+|---|:---:|:---:|
+| AddKeysToAgent  | ✅ | ❌ |
+| AddressFamily | ✅ | ❌ |
+| BatchMode | ✅ | ❌ |
+| BindAddress | ✅ | ❌ |
+| CanonicalDomains  | ✅ | ❌ |
+| CanonicalizeFallbackLocal | ✅ | ❌ |
+| CanonicalizeHostname  | ✅ | ❌ |
+| CanonicalizeMaxDots | ✅ | ❌ |
+| CanonicalizePermittedCNAMEs | ✅ | ❌ |
+| CASignatureAlgorithms | ✅ | ❌ |
+| CertificateFile | ✅ | ❌ |
+| CheckHostIP | ✅ | ❌ |
+| Ciphers | ✅ | ❌ |
+| ClearAllForwardings | ✅ | ❌ |
+| Compression | ✅ | ❌ |
+| ConnectionAttempts  | ✅ | ❌ |
+| ConnectTimeout  | ✅ | ❌ |
+| ControlMaster | ✅ | ❌ |
+| ControlPath | ✅ | ❌ |
+| ControlPersist  | ✅ | ❌ |
+| DynamicForward  | ✅ | ❌ |
+| EnableEscapeCommandline | ❌ | ❌ |
+| EscapeChar  | ✅ | ❌ |
+| ExitOnForwardFailure  | ✅ | ❌ |
+| FingerprintHash | ✅ | ❌ |
+| ForkAfterAuthentication | ✅ | ❌ |
+| ForwardAgent  | ✅ | ❌ |
+| ForwardX11  | ✅ | ❌ |
+| ForwardX11Timeout | ✅ | ❌ |
+| ForwardX11Trusted | ✅ | ❌ |
+| GatewayPorts  | ✅ | ❌ |
+| GlobalKnownHostsFile  | ✅ | ❌ |
+| GSSAPIAuthentication  | ✅ | ❌ |
+| GSSAPIDelegateCredentials | ✅ | ❌ |
+| HashKnownHosts  | ✅ | ❌ |
+| Host  | ✅ | ✅ |
+| HostbasedAcceptedAlgorithms | ✅ | ❌ |
+| HostbasedAuthentication | ✅ | ❌ |
+| HostKeyAlgorithms | ✅ | ❌ |
+| HostKeyAlias  | ✅ | ❌ |
+| Hostname  | ✅ | ✅ |
+| IdentitiesOnly  | ✅ | ❌ |
+| IdentityAgent | ✅ | ❌ |
+| IdentityFile  | ✅ | ✅ |
+| IPQoS | ✅ | ❌ |
+| KbdInteractiveAuthentication  | ❌ | ❌ |
+| KbdInteractiveDevices | ✅ | ❌ |
+| KexAlgorithms | ✅ | ❌ |
+| KnownHostsCommand | ✅ | ❌ |
+| LocalCommand  | ✅ | ❌ |
+| LocalForward  | ✅ | ❌ |
+| LogLevel  | ✅ | ❌ |
+| MACs  | ✅ | ❌ |
+| Match | ❌ | ❌ |
+| NoHostAuthenticationForLocalhost  | ✅ | ❌ |
+| NumberOfPasswordPrompts | ✅ | ❌ |
+| PasswordAuthentication  | ✅ | ❌ |
+| PermitLocalCommand  | ✅ | ❌ |
+| PermitRemoteOpen  | ✅ | ❌ |
+| PKCS11Provider  | ✅ | ❌ |
+| Port  | ✅ | ✅ |
+| PreferredAuthentications  | ✅ | ❌ |
+| ProxyCommand  | ✅ | ❌ |
+| ProxyJump | ✅ | ❌ |
+| ProxyUseFdpass  | ✅ | ❌ |
+| PubkeyAcceptedAlgorithms  | ✅ | ❌ |
+| PubkeyAuthentication  | ✅ | ❌ |
+| RekeyLimit  | ✅ | ❌ |
+| RemoteCommand | ✅ | ❌ |
+| RemoteForward | ✅ | ❌ |
+| RequestTTY  | ✅ | ❌ |
+| RequiredRSASize | ❌ | ❌ |
+| SendEnv | ✅ | ❌ |
+| ServerAliveInterval | ✅ | ❌ |
+| ServerAliveCountMax | ✅ | ❌ |
+| SessionType | ✅ | ❌ |
+| SetEnv  | ✅ | ❌ |
+| StdinNull | ✅ | ❌ |
+| StreamLocalBindMask | ✅ | ❌ |
+| StreamLocalBindUnlink | ✅ | ❌ |
+| StrictHostKeyChecking | ✅ | ✅ |
+| TCPKeepAlive  | ✅ | ❌ |
+| Tunnel  | ✅ | ❌ |
+| TunnelDevice  | ✅ | ❌ |
+| UpdateHostKeys  | ✅ | ❌ |
+| UseKeychain | ✅ | ❌ |
+| User  | ✅ | ✅ |
+| UserKnownHostsFile  | ✅ | ❌ |
+| VerifyHostKeyDNS  | ✅ | ❌ |
+| VisualHostKey | ✅ | ❌ |
+| XAuthLocation | ✅ | ❌ |
+
+</details>
+
+<details>
+<summary>Coniguration example</summary>
 
 ```
 # ----------------------------------------------------------------------
@@ -205,8 +355,12 @@ Host home-nextcloud
     Hostname nc.ratsky.local
 
 ```
+
+</details>
+
 # License
 
+Ratsky Sshabu is released under the Apache 2.0 license. See LICENSE.
 
 # Contact
 
