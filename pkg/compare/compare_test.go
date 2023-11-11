@@ -41,7 +41,7 @@ func Test_transformDifferencesToReadableFormat(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := transformDifferencesToReadableFormat(tt.args.differences, tt.args.firstBites, tt.args.secondBites); !reflect.DeepEqual(got, tt.want) {
+			if got := TransformDifferencesToReadableFormat(tt.args.differences, tt.args.firstBites, tt.args.secondBites); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("transformDifferencesToReadableFormat() = %v, want %v", got, tt.want)
 			}
 		})
@@ -88,7 +88,7 @@ func Test_diffBites(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := diffBites(tt.args.bites1, tt.args.bites2); !reflect.DeepEqual(got, tt.want) {
+			if got := DiffBites(tt.args.bites1, tt.args.bites2); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("diffBites() = %v, want %v", got, tt.want)
 			}
 		})
