@@ -98,7 +98,7 @@ Runs openssh command with `openssh.config`
 
 ## Configuration
 
-All unmentioned opions will be inherited from parent(s) groups 'till top group in <Group> derictive
+All unmentioned options will be inherited from parent(s) groups 'till top group in <Group> derictive
 
 > ~/.sshabu/sshabu.yaml
 
