@@ -1,6 +1,9 @@
 package sshabu
 
-import "testing"
+import (
+	// "fmt"
+	"testing"
+)
 
 func Test_inheritOptions(t *testing.T) {
 	type args struct {
@@ -40,15 +43,26 @@ func Test_inheritOptions(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			// old_src := tt.args.src
+			// old_dst := tt.args.dst
+			t.Log(tt.name)
+			// t.Log(old_dst)
+			// t.Log(old_dst)
 			inheritOptions(tt.args.src, tt.args.dst)
 			// Add assertions here to verify that non-nil fields were copied correctly
-			if tt.args.src.(*Options).AddressFamily != nil && tt.args.dst.(*Options).AddressFamily == nil {
-				t.Errorf("AddressFamily was not copied")
-			}
+			// t.Log(old_dst)
+			t.Log(tt.args.dst)
+			// t.Log(tt.args.dst)
+			// if old_src.(*Options).AddressFamily != nil && old_dst.(*Options).AddressFamily == nil && tt.args.src.(*Options).AddressFamily != tt.args.dst.(*Options).AddressFamily {
+			t.Errorf("AddressFamily was not copied")
+			// }
+			// if tt.args.src.(*Options).AddressFamily != nil && tt.args.dst.(*Options).AddressFamily == nil {
+			// 	t.Errorf("AddressFamily was not copied")
+			// }
 
-			if tt.args.src.(*Options).Port != nil && tt.args.dst.(*Options).Port == nil {
-				t.Errorf("Port was not copied")
-			}
+			// if tt.args.src.(*Options).Port != nil && tt.args.dst.(*Options).Port == nil {
+			// 	t.Errorf("Port was not copied")
+			// }
 		})
 	}
 }
