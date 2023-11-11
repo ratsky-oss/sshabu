@@ -274,7 +274,7 @@ StrictHostKeyChecking: <yes/accept-new/no/off/ask>
 </details>
 
 <details>
-<summary>All options reference</summary>
+<summary>Coniguration example</summary>
 
 ```
 # ----------------------------------------------------------------------
@@ -368,6 +368,7 @@ Host home-nextcloud
 
 # License
 
+Ratsky Sshabu is released under the Apache 2.0 license. See LICENSE.
 
 # Contact
 
