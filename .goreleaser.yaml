@@ -42,27 +42,6 @@ changelog:
   use: git
   sort: asc
   abbrev: -1
-  paths:
-    - foo/
-    - bar/
-
-  groups:
-    - title: Features
-      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
-      order: 0
-    - title: "Bug fixes"
-      regexp: '^.*?bug(\([[:word:]]+\))??!?:.+$'
-      order: 1
-    - title: Others
-      order: 999
-      subgroups:
-        - title: "Docs"
-          regex: ".*docs.*"
-          order: 1
-        - title: "CI"
-          regex: ".*build.*"
-          order: 2
-  divider: "---"
 
   filters:
     exclude:
