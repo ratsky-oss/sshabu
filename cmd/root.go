@@ -32,9 +32,10 @@ var opensshDestconfigFile string
 var rootCmd = &cobra.Command{
 	Use:   "sshabu",
 	Version: "0.0.1-alpha",
-	Short: "Not a ssh client, more like friendly openssh",
-	Long: `Not a ssh client, more like friendly openssh client. 
-Openssh wrapper for people, who like working in terminal.
+	Short: "Is a robust SSH client management tool",
+	Long: `is a robust SSH client management tool designed to streamline the process of connecting to multiple servers effortlessly. 
+This tool leverages OpenSSH and offers a user-friendly interface to enhance the overall SSH experience. 
+With Sshabu, managing SSH configurations becomes more intuitive, allowing users to organize and connect to their servers efficiently.
 
 Sshabu works with sshabu.yaml and openssh.config file.
 openssh.config will be created next to sshabu.yaml

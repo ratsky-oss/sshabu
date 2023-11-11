@@ -26,7 +26,7 @@ import (
 var editCmd = &cobra.Command{
 	Use:   "edit",
 	Short: "Edit sshabu config file",
-	Long: `Edit command sshabu config file with editor.
+	Long: `Edit the sshabu configuration file with editor.
 If no editor command found, ask you to choose between vim and nano.
 
 After editing you will be promted if you'd like to use 'sshabu apply'`,
