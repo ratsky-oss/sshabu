@@ -1,27 +1,20 @@
 # Ratsky Sshabu
 
-<!-- ![alt text](docs/logo_gradient_square.svg "containers"){:height="100px" width="100px"} -->
-<!-- <img src="docs/logo_gradient_square.svg" alt="alt text" width="300" height="300"> -->
 
-
-
-<!-- # Table of contents
+# Table of contents
 
 - [Overview](#overview)
-- [Requirements](#requirements)
 - [Quick start](#quick-start)
 - [Installation](#installation)
+- [Commands](#commands)
 - [Configuration](#configuration)
-    - [Settings reference](#settings-reference) 
-    - [Crucial settings](#crucial-settings)
-    - [Service management](#service-management)
-- [Troubleshooting](#troubleshooting)
 - [License](#license)
-- [Contacts](#contact) -->
+- [Contacts](#contact)
 
 # Overview
 
-<!-- TODO -->
+`Ratsky Sshabu` is a robust SSH client management tool designed to streamline the process of connecting to multiple servers effortlessly. This tool leverages OpenSSH and offers a user-friendly interface to enhance the overall SSH experience. With Sshabu, managing SSH configurations becomes more intuitive, allowing users to organize and connect to their servers efficiently.
+
 <img src="docs/sshabu-quick.gif" alt="alt text">
 
 > Openssh should be installed on your system.
@@ -82,8 +75,7 @@ mv sshabu /usr/bin/sshabu
 sshabu init
 ```
 
-## Usage
-<!-- TODO -->
+## Commands
 
 #### `sshabu init`
 Create `~/$HOME/.sshabu/` directory and generate example `sshabu.yaml` config
@@ -159,7 +151,7 @@ Generally just openssh config options in "key: value" format\
 man page - ssh_config(5)
 https://linux.die.net/man/5/ssh_config \
 
- <!-- // TODO: Host is generally the same as Name -->
+> Avoid using 'Host' option unless you know what you are doing.  
 
 ```
 HostName: <str>
