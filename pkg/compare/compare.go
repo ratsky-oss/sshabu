@@ -61,15 +61,15 @@ func TransformDifferencesToReadableFormat(differences []Difference, firstBites B
     for index, line := range secondBites.Content {
         color := Reset
         resultStr := ""
-        resultStr = fmt.Sprintf("%*d: %s%s%s", maxLineNumLen, index+1, color, line, Reset)
+        resultStr = fmt.Sprintf("%*d:   %s%s%s", maxLineNumLen, index+1, color, line, Reset)
         for _, diff := range differences {
             if diff.lineNumber == index+1 {
                 if diff.Added {
                     color = Green
-                    resultStr = fmt.Sprintf("%*d:  %s+%s%s", maxLineNumLen, index+1, color, line, Reset)
+                    resultStr = fmt.Sprintf("%*d:%s + %s%s", maxLineNumLen, index+1, color, line, Reset)
                 } else {
                     color = Red
-                    resultStr = fmt.Sprintf("%*d:  %s-%s\n      %s+%s%s", maxLineNumLen, index+1, color, diff.line ,Green, line, Reset)
+                    resultStr = fmt.Sprintf("%*d:%s - %s\n  %*s%s+ %s%s", maxLineNumLen, index+1, color, diff.line ,maxLineNumLen,"",Green, line, Reset)
                 }
                 break
             }
@@ -81,7 +81,7 @@ func TransformDifferencesToReadableFormat(differences []Difference, firstBites B
         for _, diff := range differences {
             if diff.lineNumber > len(result){
                 color := Red
-                resultStr := fmt.Sprintf("%*d: %s-%s%s", maxLineNumLen, diff.lineNumber, color, diff.line, Reset)
+                resultStr := fmt.Sprintf("%*d:%s - %s%s", maxLineNumLen, diff.lineNumber, color, diff.line, Reset)
                 result = append(result, resultStr)
             }
         }
