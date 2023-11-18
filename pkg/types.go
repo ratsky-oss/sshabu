@@ -15,16 +15,17 @@
 package sshabu
 
 import (
+	"errors"
 	"reflect"
 )
 
-func inheritOptions(src, dst interface{}) {
-	srcValue := reflect.ValueOf(src).Elem()
-	dstValue := reflect.ValueOf(dst).Elem()
+func inheritOptions(item interface{}, addition interface{}) {
+	itemValue := reflect.ValueOf(item).Elem()
+	addValue := reflect.ValueOf(addition).Elem()
 
-	for i := 0; i < srcValue.NumField(); i++ {
-		if srcValue.Field(i).Interface() == nil {
-			srcValue.Field(i).Set(dstValue.Field(i))
+	for i := 0; i < itemValue.NumField(); i++ {
+		if itemValue.Field(i).Interface() == nil {
+			itemValue.Field(i).Set(addValue.Field(i))
 		}
 	}
 }
@@ -70,21 +71,24 @@ func (shabu Shabu) FindNamesInShabu() []string {
 	return names
 }
 
-func (shabu Shabu) AreAllUnique() bool {
+func (shabu Shabu) areAllUnique() (bool, *string) {
 	seen := make(map[string]bool)
     items := shabu.FindNamesInShabu()
 	for _, item := range items {
 		if seen[item] {
-			return false // The item is not unique
+			return false, &item // The item is not unique
 		}
 		seen[item] = true
 	}
 
-	return true // All items are unique
+	return true, nil // All items are unique
 }
 
 
 func (shabu *Shabu) Boil() error {
+    if uniq, name := shabu.areAllUnique(); !uniq{
+        return errors.New("'Name' fields must be unique - '"+ *name +"' aready used")
+    }
     for i := range shabu.Groups {
         shabu.Groups[i].solveGroup(shabu.Groups[i].Options)
     }
