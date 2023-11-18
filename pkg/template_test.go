@@ -111,7 +111,6 @@ Host project2-dev
 Host home-gitlab
     Hostname gitlab.ratsky.local
     `
-    os.WriteFile("test_case", buf.Bytes(), 0600)
     if gotOutput := buf.String(); gotOutput != expectedOutput {
         t.Errorf("Rendered output does not match. \nGot: \n%s|\n Want: \n%s|", gotOutput, expectedOutput)
     }
