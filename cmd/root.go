@@ -40,9 +40,7 @@ With Sshabu, managing SSH configurations becomes more intuitive, allowing users 
 Sshabu works with sshabu.yaml and openssh.config file.
 openssh.config will be created next to sshabu.yaml
 
-sshabu.yaml locations:
-- $PWD  (current dir)
-- $HOME (user home dir)
+sshabu.yaml location - $HOME (user's home dir)
 `,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
@@ -79,14 +77,19 @@ func initConfig() {
 		viper.AddConfigPath("$PWD")
 		viper.AddConfigPath("$HOME/.sshabu")
 	}
-
+	
+	
+	
 	if err := viper.ReadInConfig(); err == nil {
-		cfgFile = viper.ConfigFileUsed()
 		cfgPath := filepath.Dir(cfgFile)
+		cfgFile = viper.ConfigFileUsed()
 		opensshTmpFile = cfgPath+"/openssh.tmp"
 		opensshDestconfigFile = cfgPath+"/openssh.config"
 		os.OpenFile(opensshTmpFile, os.O_RDONLY|os.O_CREATE, 0666)
 		os.OpenFile(opensshDestconfigFile, os.O_RDONLY|os.O_CREATE, 0666)
+		} else {
+			fmt.Printf("(╯°□°)╯︵ ɹoɹɹƎ\n%s\n$HOME/.sshabu/sshabu.yaml\n",err)
+			os.Exit(1)
 	}
 }
 
