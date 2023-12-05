@@ -39,12 +39,12 @@ openssh.config file is located right next to the used sshabu.yaml`,
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
 		cobra.CheckErr(err)
-		if shabu.AreAllUnique(){
-			fmt.Println("YAML seems OK")
-			}  else {
-			fmt.Println("Error: 'Name' Fields must be unique")
-			os.Exit(1)
-		}
+		// if shabu.AreAllUnique(){
+		// 	fmt.Println("YAML seems OK")
+		// 	}  else {
+		// 	fmt.Println("Error: 'Name' Fields must be unique")
+		// 	os.Exit(1)
+		// }
 		// names := sshabu.FindNamesInShabu(shabu)
 		
 		err = shabu.Boil()
