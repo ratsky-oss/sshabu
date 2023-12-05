@@ -15,7 +15,7 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./...
     
-    - ./scripts/completion.sh
+    # - ./scripts/completion.sh
 
 builds:
   - env:
@@ -117,10 +117,10 @@ brews:
     #
     # Template: allowed
     # Since: v1.20.
-    extra_install: |
-      bash_completion.install "completions/sshabu.bash" => "sshabu"
-      zsh_completion.install "completions/sshabu.zsh" => "_sshabu"
-      fish_completion.install "completions/sshabu.fish"
+    # extra_install: |
+    #   bash_completion.install "completions/sshabu.bash" => "sshabu"
+    #   zsh_completion.install "completions/sshabu.zsh" => "_sshabu"
+    #   fish_completion.install "completions/sshabu.fish"
 
     # Repository to push the generated files to.
     repository:
