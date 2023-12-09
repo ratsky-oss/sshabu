@@ -51,6 +51,23 @@ sshabu connect <Name>
 6. Yep-Yep-Yep! It's time for shabu!
 
 # Installation
+## Brew
+1. Adding Ratsky third-party repository 
+```bash
+brew tap ratsky-oss/taps
+```
+2. Installing sshabu
+```
+brew install sshabu
+```
+3. Validate sshabu binary
+```
+which sshabu
+```
+4. Initialize your `sshabu` configuration.
+```bash
+sshabu init
+```
 ## Easy
 1. Download the binary file `sshabu` to `/usr/bin/sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
 <!-- ```bash

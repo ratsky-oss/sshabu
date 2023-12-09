@@ -63,13 +63,13 @@ brews:
     #
     # Default depends on the client.
     # Templates: allowed
-    url_template: "https://github.com/Ra-sky/sshabu/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/ratsky-oss/sshabu/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
 
     # Caveats for the user of your binary.
     caveats: "Use `sshabu init` to create configuration example in $HOME/.sshabu/ directory"
 
     # Your app's homepage.
-    homepage: "https://github.com/Ra-sky/sshabu"
+    homepage: "https://github.com/ratsky-oss/sshabu"
 
     # Your app's description.
     #
@@ -111,7 +111,7 @@ brews:
 
     # Repository to push the generated files to.
     repository:
-      owner: Ra-sky
-      name: homebrew-sshabu
+      owner: ratsky-oss
+      name: homebrew-taps
       # token: "{{ .Env.GITHUB_HOMEBREW_AUTH_TOKEN }}"
       
