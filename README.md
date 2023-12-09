@@ -20,18 +20,22 @@
 > Openssh should be installed on your system.
 
 # Quick start
-
-1. Download the binary file `sshabu`. You can view them on the release page:
-https://github.com/Ra-sky/sshabu/releases/tag/v0.0.1-alpha
+1. Install via brew
 ```bash
-wget https://github.com/Ra-sky/sshabu/releases/download/v0.0.1-alpha/sshabu_Darwin_arm64.tar.gz
+brew install ratsky-oss/taps/sshabu
 ```
-2. Unzip and move binary file `sshabu` to `/usr/local/bin/`.
-```bash
-mkdir sshabu_Darwin_arm64 && tar -xvzf sshabu_Darwin_arm64.tar.gz -C sshabu_Darwin_arm64 && \
-  cd sshabu_Darwin_arm64 && \
-  mv sshabu /usr/local/bin/sshabu
-```
+> Or download binary and move in $PATH by yourself
+> - Download the binary file `sshabu`. You can view them on > the release page:
+> https://github.com/Ra-sky/sshabu/releases/tag/v0.0.1-alpha
+> ```bash
+> wget https://github.com/Ra-sky/sshabu/releases/download/v0.0.> 1-alpha/sshabu_Darwin_arm64.tar.gz
+> ```
+> - Unzip and move binary file `sshabu` to `/usr/local/bin/`.
+> ```bash
+> mkdir sshabu_Darwin_arm64 && tar -xvzf sshabu_Darwin_arm64.> tar.gz -C sshabu_Darwin_arm64 && \
+>   cd sshabu_Darwin_arm64 && \
+>   mv sshabu /usr/local/bin/sshabu
+> ```
 2. Initialize your sshabu configuration.
 ```bash
 sshabu init
