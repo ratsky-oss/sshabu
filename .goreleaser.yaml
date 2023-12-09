@@ -113,5 +113,5 @@ brews:
     repository:
       owner: Ra-sky
       name: homebrew-sshabu
-      token: "{{ .Env.GITHUB_HOMEBREW_AUTH_TOKEN }}"
+      # token: "{{ .Env.GITHUB_HOMEBREW_AUTH_TOKEN }}"
       
