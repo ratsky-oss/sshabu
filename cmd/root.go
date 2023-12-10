@@ -30,6 +30,9 @@ var opensshDestconfigFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
+	PersistentPreRun: func(cmd *cobra.Command, args []string){
+		initConfig()
+	},
 	Use:   "sshabu",
 	Version: "0.0.1-alpha",
 	Short: "Is a robust SSH client management tool",
@@ -58,7 +61,7 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	// cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,

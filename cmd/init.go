@@ -27,6 +27,9 @@ import (
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
+	PersistentPreRun: func(cmd *cobra.Command, args []string){
+		
+	},
 	Use:   "init",
 	Short: "Create default directories",
 	Long: `Init command search for  $HOME/.sshabu/ directory.
