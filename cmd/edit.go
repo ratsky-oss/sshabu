@@ -94,5 +94,5 @@ func editFile(filePath string) {
 
 
 func init() {
-	rootCmd.AddCommand(editCmd)
+	RootCmd.AddCommand(editCmd)
 }

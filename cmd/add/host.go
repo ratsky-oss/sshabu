@@ -1,11 +1,13 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package add
 
 import (
 	"fmt"
+	sshabu "sshabu/pkg"
 
+	"gopkg.in/yaml.v3"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -22,8 +24,31 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("host called")
-		viper.AddConfigPath("$PWD/")
-		viper.WriteConfigAs("testify")
+		var shabu sshabu.Shabu
+		err := viper.UnmarshalExact(&shabu)
+		cobra.CheckErr(err)
+		// if shabu.AreAllUnique(){
+		// 	fmt.Println("YAML seems OK")
+		// 	}  else {
+		// 	fmt.Println("Error: 'Name' Fields must be unique")
+		// 	os.Exit(1)
+		// }
+		// names := sshabu.FindNamesInShabu(shabu)
+		
+		err = shabu.Boil()
+		cobra.CheckErr(err)
+		y, err := yaml.Marshal(shabu)
+		if err != nil {
+			fmt.Printf("err: %v\n", err)
+			return
+		}
+		// y2, err := yaml.JSONToYAML(j)
+		// if err != nil {
+		// 	fmt.Printf("err: %v\n", err)
+		// 	return
+		// }
+		fmt.Println(string(y))
+		// fmt.Println(string(y2))
 	},
 }
 

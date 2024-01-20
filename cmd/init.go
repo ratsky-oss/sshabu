@@ -50,7 +50,7 @@ If no directory found, init will create it and create default $HOME/.sshabu/ssha
 	}
 
 func init() {
-	rootCmd.AddCommand(initCmd)
+	RootCmd.AddCommand(initCmd)
 
 	// Here you will define your flags and configuration settings.
 

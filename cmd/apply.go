@@ -106,5 +106,5 @@ var forceApply bool
 
 func init() {
 	applyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without confirmation")
-	rootCmd.AddCommand(applyCmd)
+	RootCmd.AddCommand(applyCmd)
 }

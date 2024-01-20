@@ -2,11 +2,11 @@
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 
 */
-package cmd
+package add
 
 import (
 	"fmt"
-
+	"sshabu/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +26,8 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	rootCmd.AddCommand(addCmd)
+
+	cmd.RootCmd.AddCommand(addCmd)
 
 	// Here you will define your flags and configuration settings.
 

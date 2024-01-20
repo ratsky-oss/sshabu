@@ -78,7 +78,7 @@ var extraOptions string
 
 func init() {
 	connectCmd.Flags().StringVarP(&extraOptions, "options", "o", "", "openssh options passed to ssh command")
-	rootCmd.AddCommand(connectCmd)
+	RootCmd.AddCommand(connectCmd)
 
 	// Here you will define your flags and configuration settings.
 
