@@ -31,6 +31,9 @@ var opensshDestconfigFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string){
+		if cmd.Name() == "completion"{
+			return
+		}
 		initConfig()
 	},
 	Use:   "sshabu",
