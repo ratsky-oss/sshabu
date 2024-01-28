@@ -57,10 +57,9 @@ func findNamesInStruct(value reflect.Value, names *[]string) {
 }
 
 type Shabu struct{
-    Options     Options     `mapstructure:"globaloptions,omitempty" yaml:",omitempty"`
-    Hosts       []Host      `mapstructure:"hosts,omitempty" yaml:",omitempty"`
-    Groups      []Group     `mapstructure:"groups,omitempty" yaml:",omitempty"`
-    // names       []string
+    Options     Options     `mapstructure:"globaloptions,omitempty" yaml:"Options,omitempty"`
+    Hosts       []Host      `mapstructure:"hosts,omitempty" yaml:"Hosts,omitempty"`
+    Groups      []Group     `mapstructure:"groups,omitempty" yaml:"Groups,omitempty"`
 }
 
 func (shabu Shabu) FindNamesInShabu() []string {
@@ -92,6 +91,19 @@ func (shabu *Shabu) Boil() error {
     for i := range shabu.Groups {
         shabu.Groups[i].solveGroup(shabu.Groups[i].Options)
     }
+    return nil
+}
+
+func (shabu *Shabu) AddHost(host Host) error {
+    var names []string
+	findNamesInStruct(reflect.ValueOf(shabu), &names)
+
+    for _, v := range names {
+        if host.Name == v {
+            return errors.New("'Name' fields must be unique - '"+ host.Name +"' aready used")
+        }
+    }
+    shabu.Hosts = append(shabu.Hosts, host)
     return nil
 }
 
@@ -221,4 +233,15 @@ type Options struct {
     VerifyHostKeyDNS                     Option          `mapstructure:"verifyhostkeydns,omitempty" yaml:"VerifyHostKeyDNS,omitempty"`
     VisualHostKey                        Option          `mapstructure:"visualhostkey,omitempty" yaml:"VisualHostKey,omitempty"`
     XAuthLocation                        Option          `mapstructure:"xauthlocation,omitempty" yaml:"XAuthLocation,omitempty"`
+}
+
+func GetAvaliableOptions() []string {
+        var ava_options []string
+        e := reflect.ValueOf(&(Options{})).Elem()
+        
+        for i := 0; i < e.NumField(); i++ {
+            varName := e.Type().Field(i).Name
+            ava_options = append(ava_options, varName)
+        }
+        return ava_options
 }

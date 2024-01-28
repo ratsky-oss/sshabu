@@ -12,6 +12,7 @@ import (
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
+	Hidden: true,
 	Use:   "add",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
