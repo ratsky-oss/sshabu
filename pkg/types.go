@@ -17,17 +17,16 @@ package sshabu
 import (
 	"errors"
 	"reflect"
+	"strings"
 )
 
-func inheritOptions(item interface{}, addition interface{}) {
-	itemValue := reflect.ValueOf(item).Elem()
-	addValue := reflect.ValueOf(addition).Elem()
-
-	for i := 0; i < itemValue.NumField(); i++ {
-		if itemValue.Field(i).Interface() == nil {
-			itemValue.Field(i).Set(addValue.Field(i))
-		}
+func uncapitalizeStrings(strs []string) []string {
+	var result []string
+	for _, s := range strs {
+		uncapitalized := strings.ToLower(s)
+		result = append(result, uncapitalized)
 	}
+	return result
 }
 
 func findNamesInStruct(value reflect.Value, names *[]string) {
@@ -111,6 +110,35 @@ func (shabu *Shabu) AddHost(host Host) error {
 type Host struct{
     Name     string  `mapstructure:"name" yaml:"Name"`
 	Options  Options `mapstructure:",squash,omitempty" yaml:",inline,omitempty"`
+}
+
+func CreateHost(fields map[string]string) interface{} {
+	structOption := reflect.TypeOf(Options{})
+	structValue := reflect.New(structOption).Elem()
+
+	for fieldName, fieldValue := range fields {
+		// Convert field name to lowercase for case-insensitive comparison
+		lowerFieldName := strings.ToLower(fieldName)
+
+		// Iterate over struct fields and find a case-insensitive match
+		for i := 0; i < structOption.NumField(); i++ {
+			structFieldName := strings.ToLower(structOption.Field(i).Name)
+			if lowerFieldName == structFieldName {
+				field := structValue.Field(i)
+
+				if field.IsValid() {
+					// Set the field value using reflection
+					field.Set(reflect.ValueOf(fieldValue))
+					break
+				}
+			}
+		}
+
+
+	}
+    // fields["name"]
+	// return structValue.Interface()
+	return Host{Options: structValue.Interface().(Options), Name: fields["name"]} 
 }
 
 func (host *Host) inheritOptions(groupOptions Options) error {
@@ -235,7 +263,18 @@ type Options struct {
     XAuthLocation                        Option          `mapstructure:"xauthlocation,omitempty" yaml:"XAuthLocation,omitempty"`
 }
 
-func GetAvaliableOptions() []string {
+func inheritOptions(item interface{}, addition interface{}) {
+    itemValue := reflect.ValueOf(item).Elem()
+    addValue := reflect.ValueOf(addition).Elem()
+
+    for i := 0; i < itemValue.NumField(); i++ {
+        if itemValue.Field(i).Interface() == nil {
+            itemValue.Field(i).Set(addValue.Field(i))
+        }
+    }
+}
+
+func getAvaliableOptions() []string {
         var ava_options []string
         e := reflect.ValueOf(&(Options{})).Elem()
         
@@ -244,4 +283,22 @@ func GetAvaliableOptions() []string {
             ava_options = append(ava_options, varName)
         }
         return ava_options
+}
+
+func AreKeysInOption(keyMap map[string]string) (bool,error) {
+    keys := uncapitalizeStrings(getAvaliableOptions())
+    for key := range keyMap {
+        var notfound string
+        for _, k := range keys {
+            notfound = ""
+            if strings.ToLower(key)  == k {
+				break
+			}
+            notfound = strings.ToLower(key)
+		}
+		if len(notfound) != 0 {
+			return false, errors.New("Unknown option - " + notfound)
+		}
+	}
+	return true, nil
 }

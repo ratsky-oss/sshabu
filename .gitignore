@@ -4,3 +4,4 @@ sshabu.yaml
 *.bkp
 dist/
 .DS_Store
+.vscode/
