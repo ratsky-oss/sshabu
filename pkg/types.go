@@ -24,24 +24,27 @@ import (
 	"strings"
 )
 
-func readFile() string {
-	file, err := os.Open("openssh.config")
+func readFile(filepath string) string {
+	file, err := os.Open(filepath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	b, err := io.ReadAll(file)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return string(b)
 }
 
-func GetShabuStruct() ([]map[string]string, error) {
+func ConvertToShabuStruct(filepath string) ([]map[string]string, error) {
 	var sl map[string]string
-	text := readFile()
+	text := readFile(filepath)
 
 	textWithoutComments := regexp.MustCompile(`#[\S ]*`).ReplaceAllString(text, "") // Delete all comments
 	wordArray := regexp.MustCompile(`(?P<first>[a-zA-Z]+) (?P<last>[\S ]+)`).FindAllStringSubmatch(textWithoutComments, -1)
 	hostCount := strings.Count(textWithoutComments, "Host ")
 	if hostCount == 0 {
-		return nil, errors.New("Ssh config is empty")
+		return nil, errors.New("ssh config is empty")
 	}
 	sliceMap := make([]map[string]string, 0, hostCount)
 	for _, element := range wordArray {

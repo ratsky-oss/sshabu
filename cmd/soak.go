@@ -5,8 +5,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
+	"os"
 	"sshabu/pkg"
+
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"gopkg.in/yaml.v3"
 )
 
 // soakCmd represents the soak command
@@ -20,13 +24,40 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		//var shabu sshabu.Shabu
-		value, err := sshabu.GetShabuStruct()
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Println(value)
+		
+		var shabu sshabu.Shabu
+		
+		// read config and convert it to struct
+		home, err := os.UserHomeDir()
+		cobra.CheckErr(err)
+		opensshDefConfigFile := home+"/.ssh/config"
+		newHosts, err := sshabu.ConvertToShabuStruct(opensshDefConfigFile)
+		cobra.CheckErr(err)
+		
+		// 
+		err = viper.UnmarshalExact(&shabu)
+		cobra.CheckErr(err)
+		err = shabu.Boil()
+		cobra.CheckErr(err)
+		for _, v := range newHosts {
+			_ , err = sshabu.AreKeysInOption(v)
+			cobra.CheckErr(err)
+			// TODO: Get rid of Params manipulation after ConvertToShabuStruct()
+			v["name"] = v["Host"]
+			delete(v,"Host")
+			host := sshabu.CreateHost(v)
+			err = shabu.AddHost(host.(sshabu.Host))
+			if err != nil {
+				fmt.Println("Warning:", err)
+			}
 		}
+
+		y, err := yaml.Marshal(shabu)
+		if err != nil {
+			fmt.Printf("err: %v\n", err) // shabu add host srv-1 -o "Hostname: jkjkjk, "
+			return
+		}
+		fmt.Println(string(y))
 	},
 }
 
