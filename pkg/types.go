@@ -16,6 +16,7 @@ package sshabu
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -143,6 +144,17 @@ func (shabu *Shabu) AddHost(host Host) error {
 	}
 	shabu.Hosts = append(shabu.Hosts, host)
 	return nil
+}
+
+func (shabu *Shabu) DelHost(name string) error {
+    for _, v := range shabu.Hosts {
+        fmt.Println(v.Name)
+        if v.Name == name{
+            v = Host{}
+            return nil
+        }
+    } 
+	return errors.New("name was not found")
 }
 
 type Host struct {

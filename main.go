@@ -6,6 +6,7 @@ package main
 import (
 	"sshabu/cmd"
 	_ "sshabu/cmd/add"
+	_ "sshabu/cmd/del"
 )
 
 var (
