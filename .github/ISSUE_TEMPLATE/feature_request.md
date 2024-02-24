@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ''
+title: 'FeatureRequest: Your Name'
 labels: ''
 assignees: alvtsky
 
