@@ -5,3 +5,4 @@ sshabu.yaml
 dist/
 .DS_Store
 completions
+.vscode/
