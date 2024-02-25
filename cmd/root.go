@@ -72,7 +72,7 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
+		if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
 	} else {
 		home, err := os.UserHomeDir()
@@ -84,11 +84,9 @@ func initConfig() {
 		viper.AddConfigPath(home+"/.sshabu")
 	}
 	
-	
-	
 	if err := viper.ReadInConfig(); err == nil {
-		cfgPath := filepath.Dir(cfgFile)
 		cfgFile = viper.ConfigFileUsed()
+		cfgPath := filepath.Dir(cfgFile)
 		opensshTmpFile = cfgPath+"/openssh.tmp"
 		opensshDestconfigFile = cfgPath+"/openssh.config"
 		os.OpenFile(opensshTmpFile, os.O_RDONLY|os.O_CREATE, 0666)
