@@ -4,13 +4,14 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package del
 
 import (
+	// "fmt"
 	"fmt"
 	sshabu "sshabu/pkg"
 	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/yaml.v3"
+	// "gopkg.in/yaml.v3"
 )
 
 var DefOptions []string
@@ -44,27 +45,22 @@ to quickly create a Cobra application.`,
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
 		cobra.CheckErr(err)
-		// if shabu.AreAllUnique(){
-		// 	fmt.Println("YAML seems OK")
-		// 	}  else {
-		// 	fmt.Println("Error: 'Name' Fields must be unique")
-		// 	os.Exit(1)
-		// }
-		// names := sshabu.FindNamesInShabu(shabu)
-		
-		// host_options, _ := cmd.Flags().GetString("options")
 		err = shabu.Boil()
 		cobra.CheckErr(err)
-		fmt.Println(shabu)
-		err = shabu.DelHost("milanr-pi-new-01")
-		cobra.CheckErr(err)
-		y, err := yaml.Marshal(shabu)
-		if err != nil {
-			fmt.Printf("err: %v\n", err) // shabu add host srv-1 -o "Hostname: jkjkjk, "
-			return
-		}
-		fmt.Println(string(y))
+		// fmt.Println(shabu)
+		err = shabu.FuncSshabuObj(func(i interface{}) error {
+			fmt.Println(i)
+			return nil
+			}, args[0])
 		// fmt.Println(host)
+		// err = shabu.DelHost("milanr-pi-new-01")
+		cobra.CheckErr(err)
+		// y, err := yaml.Marshal(shabu)
+		// if err != nil {
+		// 	fmt.Printf("err: %v\n", err) 
+		// 	return
+		// }
+		// fmt.Println(string(y))
 	},
 }
 

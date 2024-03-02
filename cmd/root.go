@@ -71,15 +71,17 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	// Set default conf path if not preset
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
-	} else {
-		viper.SetConfigType("yaml")
-		viper.SetConfigName("sshabu")
-		viper.AddConfigPath("$PWD")
-		viper.AddConfigPath("$HOME/.sshabu")
-	}
-
+		} else {
+			viper.SetConfigType("yaml")
+			viper.SetConfigName("sshabu")
+			viper.AddConfigPath("$PWD")
+			viper.AddConfigPath("$HOME/.sshabu")
+		}
+		
+	// Read sshabu.yaml
 	if err := viper.ReadInConfig(); err == nil {
 		cfgFile = viper.ConfigFileUsed()
 		cfgPath := filepath.Dir(cfgFile)

@@ -102,6 +102,36 @@ type Shabu struct {
 	Groups  []Group `mapstructure:"groups,omitempty" yaml:"Groups,omitempty"`
 }
 
+// func do smth on specified object
+func (shabu *Shabu) FuncSshabuObj(action func(interface{}) error, name string) error{
+    if uniq, _ := shabu.areAllUnique(); !uniq {
+        return errors.New("yaml is not OK")
+    }
+	var solver func (hosts []Host,groups []Group) error
+	solver = func (hosts []Host,groups []Group) error {
+		for _, v := range hosts {
+			if v.Name == name{
+				err := action(v)
+				return err
+			}
+		}
+		for _, v := range groups{
+			if v.Name == name {
+				err := action(v)
+				return err
+			}
+			res := solver(v.Hosts, v.Subgroups)
+			if res == nil {
+				return nil
+			} else if res.Error() != "not found"{
+				return res
+			}
+		}
+		return errors.New("not found")
+	}
+	return solver(shabu.Hosts,shabu.Groups)
+}
+
 func (shabu Shabu) FindNamesInShabu() []string {
 	var names []string
 
