@@ -26,9 +26,9 @@ brew install ratsky-oss/taps/sshabu
 ```
 > Or download binary and move in $PATH by yourself
 > - Download the binary file `sshabu`. You can view them on > the release page:
-> https://github.com/Ra-sky/sshabu/releases/tag/v0.0.1-alpha
+> https://github.com/Ra-sky/sshabu/releases
 > ```bash
-> wget https://github.com/Ra-sky/sshabu/releases/download/v0.0.> 1-alpha/sshabu_Darwin_arm64.tar.gz
+> wget https://github.com/ratsky-oss/sshabu/releases/download/v0.1.2/sshabu_Linux_arm64.tar.gz
 > ```
 > - Unzip and move binary file `sshabu` to `/usr/local/bin/`.
 > ```bash
