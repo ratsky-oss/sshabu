@@ -25,8 +25,22 @@ import (
 	"github.com/spf13/viper"
 )
 
+func RunApply(args []string) error {
+		// Create a fresh command instance
+		runApplyCmd := &cobra.Command{
+			Use: applyCmd.Use,
+			Run: applyCmd.Run,
+		}
+		
+		// Copy all flags
+		runApplyCmd.Flags().AddFlagSet(applyCmd.Flags())
+		runApplyCmd.SetArgs(args)
+		
+		err := runApplyCmd.Execute()
+		return err
+}      
 // applyCmd represents the apply command
-var ApplyCmd = &cobra.Command{
+var applyCmd = &cobra.Command{
 	Use:   "apply",
 	Short: "Transform sshabu.yaml to openssh.config",
 	Long: `Apply the generate openssh_config according to yaml specification.
@@ -105,6 +119,6 @@ openssh.config file is located right next to the used sshabu.yaml`,
 var forceApply bool
 
 func init() {
-	ApplyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without confirmation")
-	rootCmd.AddCommand(ApplyCmd)
+	applyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without confirmation")
+	rootCmd.AddCommand(applyCmd)
 }

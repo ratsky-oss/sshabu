@@ -77,18 +77,7 @@ func editFile(filePath string) {
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
 	if strings.ToLower(text) == "y" {
-            // Create a fresh command instance
-            applyCmd := &cobra.Command{
-                Use: ApplyCmd.Use,
-                Run: ApplyCmd.Run,
-            }
-            
-            // Copy all flags
-            applyCmd.Flags().AddFlagSet(ApplyCmd.Flags())
-            
-            // Execute without recursion
-            applyCmd.SetArgs([]string{})
-            if err := applyCmd.Execute(); err != nil {
+            if err := RunApply([]string{}); err != nil {
                 cobra.CheckErr(err)
             }
 
