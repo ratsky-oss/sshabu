@@ -76,12 +76,12 @@ func editFile(filePath string) {
 	fmt.Print("Would you like sshabu to apply changes? [y/n]: ")
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
+
+
 	if strings.ToLower(text) == "y" {
             if err := RunApply([]string{}); err != nil {
                 cobra.CheckErr(err)
             }
-
-
 	} else {
 		fmt.Println("Ok.(╥﹏╥)")
 		fmt.Println("Changes was not applied.")

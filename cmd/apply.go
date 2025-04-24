@@ -31,10 +31,12 @@ func RunApply(args []string) error {
 			Use: applyCmd.Use,
 			Run: applyCmd.Run,
 		}
-		
 		// Copy all flags
 		runApplyCmd.Flags().AddFlagSet(applyCmd.Flags())
 		runApplyCmd.SetArgs(args)
+		if err := viper.ReadInConfig(); err != nil{
+			return err
+		}
 		
 		err := runApplyCmd.Execute()
 		return err
