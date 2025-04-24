@@ -76,16 +76,12 @@ func editFile(filePath string) {
 	fmt.Print("Would you like sshabu to apply changes? [y/n]: ")
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
+
+
 	if strings.ToLower(text) == "y" {
-		cmd := exec.Command("sshabu", "apply")
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		err := cmd.Run()
-		if err != nil {
-			fmt.Printf("Failed to run apply: %v\n", err)
-			return
-		}
+            if err := RunApply([]string{}); err != nil {
+                cobra.CheckErr(err)
+            }
 	} else {
 		fmt.Println("Ok.(╥﹏╥)")
 		fmt.Println("Changes was not applied.")

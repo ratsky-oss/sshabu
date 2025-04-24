@@ -25,6 +25,22 @@ import (
 	"github.com/spf13/viper"
 )
 
+func RunApply(args []string) error {
+		// Create a fresh command instance
+		runApplyCmd := &cobra.Command{
+			Use: applyCmd.Use,
+			Run: applyCmd.Run,
+		}
+		// Copy all flags
+		runApplyCmd.Flags().AddFlagSet(applyCmd.Flags())
+		runApplyCmd.SetArgs(args)
+		if err := viper.ReadInConfig(); err != nil{
+			return err
+		}
+		
+		err := runApplyCmd.Execute()
+		return err
+}      
 // applyCmd represents the apply command
 var applyCmd = &cobra.Command{
 	Use:   "apply",
