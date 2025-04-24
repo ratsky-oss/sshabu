@@ -77,15 +77,22 @@ func editFile(filePath string) {
 	text, _ := reader.ReadString('\n')
 	text = strings.TrimSpace(text)
 	if strings.ToLower(text) == "y" {
-		cmd := exec.Command("sshabu", "apply")
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		err := cmd.Run()
-		if err != nil {
-			fmt.Printf("Failed to run apply: %v\n", err)
-			return
-		}
+            // Create a fresh command instance
+            applyCmd := &cobra.Command{
+                Use: ApplyCmd.Use,
+                Run: ApplyCmd.Run,
+            }
+            
+            // Copy all flags
+            applyCmd.Flags().AddFlagSet(ApplyCmd.Flags())
+            
+            // Execute without recursion
+            applyCmd.SetArgs([]string{})
+            if err := applyCmd.Execute(); err != nil {
+                cobra.CheckErr(err)
+            }
+
+
 	} else {
 		fmt.Println("Ok.(╥﹏╥)")
 		fmt.Println("Changes was not applied.")

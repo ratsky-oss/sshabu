@@ -26,7 +26,7 @@ import (
 )
 
 // applyCmd represents the apply command
-var applyCmd = &cobra.Command{
+var ApplyCmd = &cobra.Command{
 	Use:   "apply",
 	Short: "Transform sshabu.yaml to openssh.config",
 	Long: `Apply the generate openssh_config according to yaml specification.
@@ -105,6 +105,6 @@ openssh.config file is located right next to the used sshabu.yaml`,
 var forceApply bool
 
 func init() {
-	applyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without confirmation")
-	rootCmd.AddCommand(applyCmd)
+	ApplyCmd.Flags().BoolVarP(&forceApply, "force", "f", false, "Apply configuration without confirmation")
+	rootCmd.AddCommand(ApplyCmd)
 }
