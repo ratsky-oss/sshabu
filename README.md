@@ -20,11 +20,22 @@
 > Openssh should be installed on your system.
 
 # Quick start
-
-1. Download the binary file `sshabu` to `/usr/bin/sshabu`.
-<!-- ```bash
-wget -O /usr/bin/sshabu https://git.ratsky.ru/ratsky/ssh-client/sshabu/-/jobs/2334/artifacts/download?file_type=archive
-``` -->
+1. Install via brew
+```bash
+brew install ratsky-oss/taps/sshabu
+```
+> Or download binary and move in $PATH by yourself
+> - Download the binary file `sshabu`. You can view them on > the release page:
+> https://github.com/Ra-sky/sshabu/releases
+> ```bash
+> wget https://github.com/ratsky-oss/sshabu/releases/download/v0.1.2/sshabu_Linux_arm64.tar.gz
+> ```
+> - Unzip and move binary file `sshabu` to `/usr/local/bin/`.
+> ```bash
+> mkdir sshabu_Darwin_arm64 && tar -xvzf sshabu_Darwin_arm64.> tar.gz -C sshabu_Darwin_arm64 && \
+>   cd sshabu_Darwin_arm64 && \
+>   mv sshabu /usr/local/bin/sshabu
+> ```
 2. Initialize your sshabu configuration.
 ```bash
 sshabu init
@@ -44,6 +55,23 @@ sshabu connect <Name>
 6. Yep-Yep-Yep! It's time for shabu!
 
 # Installation
+## Brew
+1. Adding Ratsky third-party repository 
+```bash
+brew tap ratsky-oss/taps
+```
+2. Installing sshabu
+```
+brew install sshabu
+```
+3. Validate sshabu binary
+```
+which sshabu
+```
+4. Initialize your `sshabu` configuration.
+```bash
+sshabu init
+```
 ## Easy
 1. Download the binary file `sshabu` to `/usr/bin/sshabu`. You can change the default path from `/usr/bin/sshabu` to your own, but make sure that the path is included in your `PATH` environment variable.
 <!-- ```bash

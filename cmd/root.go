@@ -30,6 +30,12 @@ var opensshDestconfigFile string
 
 // rootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
+	PersistentPreRun: func(cmd *cobra.Command, args []string){
+		if cmd.Name() == "completion"{
+			return
+		}
+		initConfig()
+	},
 	Use:   "sshabu",
 	Version: "0.0.1-alpha",
 	Short: "Is a robust SSH client management tool",
@@ -40,9 +46,7 @@ With Sshabu, managing SSH configurations becomes more intuitive, allowing users 
 Sshabu works with sshabu.yaml and openssh.config file.
 openssh.config will be created next to sshabu.yaml
 
-sshabu.yaml locations:
-- $PWD  (current dir)
-- $HOME (user home dir)
+sshabu.yaml location - $HOME (user's home dir)
 `,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
@@ -60,7 +64,7 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	// cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
@@ -71,25 +75,27 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	// Set default conf path if not preset
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
-		} else {
-			viper.SetConfigType("yaml")
-			viper.SetConfigName("sshabu")
-			viper.AddConfigPath("$PWD")
-			viper.AddConfigPath("$HOME/.sshabu")
-		}
-		
-	// Read sshabu.yaml
+	} else {
+		viper.SetConfigType("yaml")
+		viper.SetConfigName("sshabu")
+		viper.AddConfigPath("$PWD")
+		viper.AddConfigPath("$HOME/.sshabu")
+	}
+
 	if err := viper.ReadInConfig(); err == nil {
 		cfgFile = viper.ConfigFileUsed()
 		cfgPath := filepath.Dir(cfgFile)
 		opensshTmpFile = cfgPath+"/openssh.tmp"
 		opensshDestconfigFile = cfgPath+"/openssh.config"
+		
 		os.OpenFile(opensshTmpFile, os.O_RDONLY|os.O_CREATE, 0666)
 		os.OpenFile(opensshDestconfigFile, os.O_RDONLY|os.O_CREATE, 0666)
-	}
+		} else {
+			fmt.Printf("(╯°□°)╯︵ ɹoɹɹƎ\n%s\n$HOME/.sshabu/sshabu.yaml\n",err)
+			os.Exit(1)
+		}
 }
 
 

@@ -1,7 +1,9 @@
-openssh.tmp
+openssh.*
 sshabu.yaml
 *.drowio
 *.bkp
 dist/
 .DS_Store
+completions
 .vscode/
+sshabu

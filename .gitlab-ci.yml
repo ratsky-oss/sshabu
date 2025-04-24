@@ -1,0 +1,31 @@
+.build:
+  image: golang:1.21-alpine3.17
+  tags:
+    - docker
+    - walnut
+  variables:
+    GO_PROJECT: sshabu
+
+stages:
+  - building
+
+
+build: 
+  stage: building
+  extends: .build
+  script:
+    - GOOS=linux GOARCH=amd64 go build -o $GO_PROJECT-linux-amd64
+    # - GOOS=linux GOARCH=386 go build -o $GO_PROJECT-linux-386
+    # - GOOS=windows GOARCH=amd64 go build -o $GO_PROJECT-windows-amd64
+    # - GOOS=windows GOARCH=386 go build -o $GO_PROJECT-windows-386
+    - GOOS=darwin GOARCH=arm64 go build -o $GO_PROJECT-darwin-arm64
+  artifacts:
+    paths:
+      - $GO_PROJECT-linux-amd64
+      - $GO_PROJECT-darwin-arm64
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+
+
+
+
