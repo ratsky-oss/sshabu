@@ -75,15 +75,18 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
+		if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
 	} else {
+		home, err := os.UserHomeDir()
+		cobra.CheckErr(err)
+
 		viper.SetConfigType("yaml")
 		viper.SetConfigName("sshabu")
-		viper.AddConfigPath("$PWD")
-		viper.AddConfigPath("$HOME/.sshabu")
+		// viper.AddConfigPath("$PWD")
+		viper.AddConfigPath(home+"/.sshabu")
 	}
-
+	
 	if err := viper.ReadInConfig(); err == nil {
 		cfgFile = viper.ConfigFileUsed()
 		cfgPath := filepath.Dir(cfgFile)
