@@ -103,24 +103,26 @@ type Shabu struct {
 }
 
 // func do smth on specified object
-func (shabu *Shabu) FuncSshabuObj(action func(interface{}) error, name string) error{
+func (shabu *Shabu) FuncSshabuSlice(action func(interface{}) error, name string) error{
     if uniq, _ := shabu.areAllUnique(); !uniq {
         return errors.New("yaml is not OK")
     }
-	var solver func (hosts []Host,groups []Group) error
-	solver = func (hosts []Host,groups []Group) error {
-		for _, v := range hosts {
+	var solver func (hosts *[]Host,groups *[]Group) error
+	solver = func (hosts *[]Host,groups *[]Group) error {
+		for _, v := range *hosts {
 			if v.Name == name{
-				err := action(v)
+				err := action(hosts)
+				fmt.Println("----")
+				fmt.Println(hosts)
 				return err
 			}
 		}
-		for _, v := range groups{
+		for _, v := range *groups{
 			if v.Name == name {
 				err := action(v)
 				return err
 			}
-			res := solver(v.Hosts, v.Subgroups)
+			res := solver(&v.Hosts, &v.Subgroups)
 			if res == nil {
 				return nil
 			} else if res.Error() != "not found"{
@@ -129,7 +131,7 @@ func (shabu *Shabu) FuncSshabuObj(action func(interface{}) error, name string) e
 		}
 		return errors.New("not found")
 	}
-	return solver(shabu.Hosts,shabu.Groups)
+	return solver(&shabu.Hosts,&shabu.Groups)
 }
 
 func (shabu Shabu) FindNamesInShabu() []string {
@@ -153,6 +155,7 @@ func (shabu Shabu) areAllUnique() (bool, *string) {
 	return true, nil // All items are unique
 }
 
+// Boid inherit all parents params to child
 func (shabu *Shabu) Boil() error {
 	if uniq, name := shabu.areAllUnique(); !uniq {
 		return errors.New("'Name' fields must be unique - '" + *name + "' aready used")
@@ -190,6 +193,10 @@ func (shabu *Shabu) DelHost(name string) error {
 type Host struct {
 	Name    string  `mapstructure:"name" yaml:"Name"`
 	Options Options `mapstructure:",squash,omitempty" yaml:",inline,omitempty"`
+}
+
+func (h Host) GetName() string {
+    return h.Name
 }
 
 func CreateHost(fields map[string]string) interface{} {
@@ -235,6 +242,10 @@ type Group struct {
 func (group *Group) inheritOptions(parentOptions Options) error {
 	inheritOptions(&group.Options, &parentOptions)
 	return nil
+}
+
+func (g Group) GetName() string {
+    return g.Name
 }
 
 func (group *Group) solveGroup(parentOptions Options) error {

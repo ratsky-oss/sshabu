@@ -14,7 +14,7 @@ import (
 var delCmd = &cobra.Command{
 	Hidden: true,
 	Use:   "del",
-	Short: "A brief description of your command",
+	Short: "delete <host> or <group> by name",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
