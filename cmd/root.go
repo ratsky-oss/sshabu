@@ -96,7 +96,9 @@ func initConfig() {
 		os.OpenFile(opensshTmpFile, os.O_RDONLY|os.O_CREATE, 0666)
 		os.OpenFile(opensshDestconfigFile, os.O_RDONLY|os.O_CREATE, 0666)
 		} else {
-			fmt.Printf("(╯°□°)╯︵ ɹoɹɹƎ\n%s\n$HOME/.sshabu/sshabu.yaml\n",err)
+			fmt.Println("(╯°□°)╯︵ ɹoɹɹƎ")
+			cfgFile, _ = filepath.Abs(viper.ConfigFileUsed())
+			fmt.Printf("\n%s\n└─ %s",cfgFile,err)
 			os.Exit(1)
 		}
 }
