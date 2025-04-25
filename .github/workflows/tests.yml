@@ -51,7 +51,13 @@ jobs:
             coverage.out
             coverage.html
       
-      # Optional: Upload to codecov.io
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v3
-        if: success()  # Only run if tests passed
+      # # Optional: Upload to codecov.io
+      # - name: Upload to Codecov
+      #   if: success()  # Only run if tests passed
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}  # Only needed for private repos
+      #     file: coverage.out
+      #     flags: unittests
+      #     name: go-coverage
+      #     fail_ci_if_error: false
