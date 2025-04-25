@@ -44,7 +44,7 @@ jobs:
           go tool cover -html=coverage.out -o coverage.html
       
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: go-coverage-report
           path: |
