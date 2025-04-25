@@ -111,18 +111,15 @@ func (shabu *Shabu) FuncSshabuSlice(action func(interface{}) error, name string)
 	solver = func (hosts *[]Host,groups *[]Group) error {
 		for _, v := range *hosts {
 			if v.Name == name{
-				err := action(hosts)
-				fmt.Println("----")
-				fmt.Println(hosts)
-				return err
+				return action(hosts)
 			}
 		}
-		for _, v := range *groups{
+		for i, v := range *groups{
 			if v.Name == name {
 				err := action(v)
 				return err
 			}
-			res := solver(&v.Hosts, &v.Subgroups)
+			res := solver(&(*groups)[i].Hosts, &(*groups)[i].Subgroups)
 			if res == nil {
 				return nil
 			} else if res.Error() != "not found"{
