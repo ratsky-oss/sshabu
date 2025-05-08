@@ -1,0 +1,63 @@
+name: Go Tests with Coverage
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Important for some Go tools that need full history
+      
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'  # Or your preferred version
+          check-latest: true  # Ensures you get the latest patch version
+      
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ${GITHUB_WORKSPACE}/.go-cache
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      
+      - name: Run tests (recursive)
+        run: |
+          # Print Go version for debugging
+          go version
+          
+          # Verify we're finding all test files
+          echo "Test files found:"
+          find . -name "*_test.go" | sed 's/^/  /'
+          
+          # Run tests with coverage (./... means recursive)
+          go test -v -coverprofile=coverage.out -covermode=atomic ./...
+          
+          # Generate coverage report
+          go tool cover -func=coverage.out
+          go tool cover -html=coverage.out -o coverage.html
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-coverage-report
+          path: |
+            coverage.out
+            coverage.html
+      
+      # # Optional: Upload to codecov.io
+      # - name: Upload to Codecov
+      #   if: success()  # Only run if tests passed
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}  # Only needed for private repos
+      #     file: coverage.out
+      #     flags: unittests
+      #     name: go-coverage
+      #     fail_ci_if_error: false
