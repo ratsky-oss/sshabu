@@ -45,33 +45,12 @@ to quickly create a Cobra application.`,
 		var shabu sshabu.Shabu
 		err := viper.UnmarshalExact(&shabu)
 		cobra.CheckErr(err)
-		// err = shabu.Boil()
-		cobra.CheckErr(err)
-		// fmt.Println(shabu)
-		fmt.Println(shabu.Hosts)
+
+
 		err = shabu.FuncSshabuSlice(func(slicePtr interface{}) error {
-			// 1. Проверяем, что нам передали именно *[]Host
-			// ptr, ok := slicePtr.(**[]sshabu.Host) // Обратите внимание на двойной указатель
-			// if !ok {
-			// 	return fmt.Errorf("expected *[]Host, got %T", slicePtr)
-			// }
-			
-			// // 2. Разыменовываем указатель на слайс
-			// hosts := *ptr
-			
-			// // 3. Фильтруем элементы
-			// filtered := make([]sshabu.Host, 0, len(*hosts))
-			// for _, h := range *hosts {
-			// 	if h.Name != args[0] {
-			// 		filtered = append(filtered, h)
-			// 	}
-			// }
-			
-			// // 4. Меняем исходный слайс через указатель
-			// *ptr = &filtered
 			ptr, ok := slicePtr.(*[]sshabu.Host)
 			if !ok {
-				return fmt.Errorf("invalid type %T", slicePtr)
+				return fmt.Errorf("seems like wrong name since \"%s\" is %T", args[0] , slicePtr)
 			}
 			
 			// Теперь работаем с *[]Host
@@ -85,14 +64,15 @@ to quickly create a Cobra application.`,
 			fmt.Println(ptr)
 			return nil
 			}, args[0])
-		// err = shabu.DelHost("milanr-pi-new-01")
 		cobra.CheckErr(err)
 		y, err := yaml.Marshal(shabu)
 		if err != nil {
 			fmt.Printf("err: %v\n", err) 
 			return
 		}
+
 		fmt.Println(string(y))
+
 	},
 }
 
